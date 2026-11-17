@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SUNO PRO COMPOSER // MEGA EXPANDED PENALTY EDITION</title>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #08080a;
+            --card-bg: #121216;
+            --border-color: #262630;
+            --primary-color: #e11d48;
+            --primary-hover: #be123c;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --accent-orange: #f97316;
+            --accent-purple: #a855f7;
+            --accent-blue: #3b82f6;
+        }
+
+        body.theme-rose { --primary-color: #e11d48; --primary-hover: #be123c; }
+        body.theme-blue { --primary-color: #2563eb; --primary-hover: #1d4ed8; }
+        body.theme-purple { --primary-color: #9333ea; --primary-hover: #7e22ce; }
+        body.theme-orange { --primary-color: #ea580c; --primary-hover: #c2410c; }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Prompt', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 8px;
+            line-height: 1.4;
+            font-size: 13px;
+            background-image: radial-gradient(circle at 50% 0%, #180b12 0%, #08080a 70%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 14px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        header h1 {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--text-main);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        header h1 span { color: var(--primary-color); }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 0.7rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .grid-2 { display: flex; flex-direction: column; gap: 8px; }
+        .grid-3 { display: flex; flex-direction: column; gap: 8px; }
+
+        label {
+            display: block;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            margin-bottom: 3px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            background-color: #050507;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 9px 10px;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 6px rgba(225, 29, 72, 0.25);
+        }
+
+        .toolbar {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .toolbar button {
+            width: 100%;
+            justify-content: center;
+            padding: 10px 8px;
+            font-size: 0.78rem;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 6px 8px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            transition: all 0.15s;
+        }
+
+        button:hover { background-color: var(--primary-hover); }
+        button:active { transform: scale(0.97); }
+
+        button.btn-secondary { background-color: #27272a; color: #d4d4d8; border: 1px solid #3f3f46; }
+        button.btn-success { background-color: #059669; }
+        button.btn-danger { background-color: #991b1b; }
+        button.btn-warning { background-color: var(--accent-orange); color: white; }
+        button.btn-info { background-color: var(--accent-blue); color: white; }
+
+        .sheet-container {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: #0c0c0f;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .sheet-header-bar {
+            background: #18181b;
+            padding: 10px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .section-break-row {
+            background: #18121f;
+            border-top: 2px solid var(--accent-orange);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .section-break-row td {
+            padding: 8px 10px;
+            text-align: left !important;
+        }
+
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        table {
+            width: 100%;
+            min-width: 560px;
+            border-collapse: collapse;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 4px;
+        }
+
+        th {
+            background-color: #121216;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+        }
+
+        td input {
+            text-align: center;
+            padding: 6px 2px;
+            font-size: 13px;
+            background: #050507;
+        }
+
+        .quick-symbols {
+            display: flex;
+            gap: 2px;
+            margin-top: 3px;
+            justify-content: center;
+        }
+
+        .quick-symbols button {
+            padding: 3px 4px;
+            font-size: 0.6rem;
+            background: #27272a;
+            border: 1px solid #3f3f46;
+            border-radius: 3px;
+        }
+
+        .row-controls {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2px;
+            width: 105px;
+            margin: 0 auto;
+        }
+
+        .row-controls button {
+            padding: 4px 2px;
+            font-size: 0.65rem;
+            height: 24px;
+        }
+
+        .output-box {
+            background-color: #030304;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 10px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.8rem;
+            white-space: pre-wrap;
+            color: #fb7185;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 8px;
+        }
+
+        @media (min-width: 768px) {
+            body { padding: 20px; font-size: 14px; }
+            .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+            .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+            .toolbar { display: flex; flex-wrap: wrap; }
+            table { min-width: 100%; }
+            .row-controls { width: 130px; }
+            .row-controls button { padding: 5px 4px; font-size: 0.72rem; height: 26px; }
+        }
+    </style>
+</head>
+<body class="theme-rose">
+
+<div class="container">
+    <header>
+        <h1>SUNO PRO <span>COMPOSER</span></h1>
+        <p>// MEGA EXPANDED PENALTY EDITION : MAXIMUM OPTIONS LOADED</p>
+    </header>
+
+    <!-- ส่วนกำหนดค่าเพลง (จัดเต็มออปชันแนวเพลงและพรีเซตแบบจุกๆ) -->
+    <div class="card">
+        <h3 style="margin-bottom: 10px; font-size: 0.85rem; color: #fb7185; text-transform: uppercase;">1. Project & Mega Style Configuration</h3>
+        
+        <div class="grid-2" style="margin-bottom: 10px;">
+            <div>
+                <label>ชื่อเพลง (Song Title)</label>
+                <input type="text" id="songTitle" placeholder="ใส่ชื่อเพลง..." value="UNNAMED TRACK">
+            </div>
+            <div>
+                <label>เลือกแนวเพลงสากล (Global Genre - Mega List)</label>
+                <select id="genrePreset" onchange="updateStylePrompt()">
+                    <!-- Hip Hop & Urban -->
+                    <option value="Lo-fi Hip Hop, Chill, Mellow, Relaxing">🎵 [Lo-fi Hip Hop] – ฮิปฮอปฟังสบาย บีทหน่วงๆ อบอุ่น</option>
+                    <option value="Boom Bap Hip Hop, Old school rap beat, Gritty drums, Heavy bass">🎤 [Boom Bap Hip Hop] – ฮิปฮอปยุค 90s ดนตรีดิบ กรูฟแน่นๆ</option>
+                    <option value="Modern Trap, Heavy 808 bass, Dark melodic synth, Hard drums">🔥 [Modern Trap] – แทร็ปดาร์กๆ เบส 808 แน่นๆ ทรงพลัง</option>
+                    <option value="Drill Rap, Aggressive sliding 808s, Dark UK drill beat">🔪 [UK / Chicago Drill] – แทร็ปดุเดือด เบสเลื้อยสไตล์ดริลล์</option>
+                    <option value="Phonk, Memphis rap style, Cowbell melodies, Distortion bass">🚗 [Phonk / Memphis] – ฟองค์เดือดๆ สไตล์ซิ่งรถ เบสแตก</option>
+                    <option value="West Coast G-Funk, Smooth synth leads, Whistling synth, Funky bass">🌴 [West Coast G-Funk] – ฮิปฮอปฝั่งตะวันตก ซินธ์พริ้วๆ ฟังเพลิน</option>
+                    <option value="Cloud Rap, Ethereal atmospheric beats, Dreamy reverb synth">☁️ [Cloud Rap] – แร็ปลอยๆ บีทดึงดูด ชวนฝัน</option>
+
+                    <!-- Acoustic & Pop -->
+                    <option value="Acoustic Pop, Warm acoustic guitar, Soft vocal, Gentle">🪕 [Acoustic Pop] – ป๊อบฟังสบาย กีตาร์โปร่ง อบอุ่น (สไตล์ Ed Sheeran)</option>
+                    <option value="Indie Pop, Catchy upbeat rhythm, Bright guitar, Youthful">🌟 [Indie Pop] – อินดี้ป๊อบ จังหวะสดใส กีตาร์ริฟฟ์ติดหู</option>
+                    <option value="Synth Pop, Catchy electronic rhythm, 80s groove, Bright melody">🎹 [Synth Pop] – ป๊อบสังเคราะห์ จังหวะสนุกยุค 80s</option>
+                    <option value="Dream Pop, Ethereal vocal harmonies, Reverb-drenched guitars">☁️ [Dream Pop] – ดรีมป๊อบ เสียงร้องลอยละล่อง ละมุน</option>
+                    <option value="Sad Piano Ballad, Emotional piano chords, Soft strings">🥀 [Sad Piano Ballad] – เปียโนบัลลาดเศร้าๆ บีบหัวใจ</option>
+
+                    <!-- Rock & Metal -->
+                    <option value="90s Alternative Rock, Grunge, Distorted guitar, Melancholic">🎸 [90s Alternative Rock] – ร็อกยุค 90s กีตาร์แตกๆ ดิบๆ หม่นๆ</option>
+                    <option value="Indie Rock, Catchy guitar riffs, Youthful energy, Upbeat">⚡ [Indie Rock] – อินดี้ร็อก พลังวัยรุ่น</option>
+                    <option value="Heavy Metal, Aggressive electric guitar, Double bass drum, Epic solo">🤘 [Heavy Metal] – เฮฟวีเมทัล กีตาร์โซโล่เดือดๆ ดุดัน</option>
+                    <option value="Punk Rock, Fast tempo, High energy, Rebellious attitude">🛹 [Punk Rock] – พังก์ร็อก จังหวะเร็ว ดิบทรงพลัง</option>
+                    <option value="Post-Rock, Atmospheric guitar soundscapes, Epic crescendos">🌌 [Post-Rock] – โพสต์ร็อก ซาวด์กีตาร์กว้างๆ อลังการ</option>
+
+                    <!-- Electronic & Synthwave -->
+                    <option value="Synthwave, Retrowave, 80s electronic, Warm analog synth">📼 [Synthwave / Retrowave] – อิเล็กทรอนิกส์ยุค 80s ซินธ์เรโทร</option>
+                    <option value="Cyberpunk Synth, Dark futuristic electronic, Heavy bassline">🦾 [Cyberpunk Synth] – ไซเบอร์พังก์ อนาคตดาร์กๆ นีออนเดือด</option>
+                    <option value="EDM Dance, High energy drop, Festival synth leads, Punchy bass">🎉 [EDM / Club Dance] – แดนซ์คลับ พลังงานสูง</option>
+                    <option value="Deep House, Four-on-the-floor groove, Smooth bassline, Chill club">🏠 [Deep House] – ดีพเฮาส์ กรูฟนุ่มๆ ชวนโยกตาม</option>
+                    <option value="Cyber-Bass, Glitchy beats, Heavy distorted electronic bass">⚡ [Cyber-Bass] – อิเล็กทรอนิกส์ล้ำยุค เบสกระกระชากวิญญาณ</option>
+
+                    <!-- Jazz, R&B & Classical -->
+                    <option value="Jazz Hop, Smooth saxophone, Chill beats, Mellow piano">🎷 [Jazz Hop] – แจ๊สฮิปฮอป แซกโซโฟนพริ้ว เปียโนละมุน</option>
+                    <option value="R&B, Smooth soulful vocals, Groovy bassline, Sensual vibe">🖤 [R&B / Soul] – อาร์แอนด์บี นุ่มลึก ซึ้ง ชวนเคลิ้ม</option>
+                    <option value="Bossa Nova, Acoustic guitar rhythm, Soft breezy vocal, Relaxed">☕ [Bossa Nova] – บอสซาโนวา สไตล์คาเฟ่ริมทะเล ชิลๆ</option>
+                    <option value="Cinematic Orchestral, Epic strings, Emotional film score">🎻 [Cinematic Orchestral] – อลังการเครื่องสาย แนวภาพยนตร์ฮอลลีวูด</option>
+                    <option value="Blues, Delta blues guitar, Soulful, Emotional bending notes">🥃 [Blues] – บลูส์ดิบๆ กีตาร์ดึงโน้ตบาดใจ คลาสสิก</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="grid-3" style="margin-bottom: 10px;">
+            <div>
+                <label>เลือกความเร็ว (BPM - Full Range)</label>
+                <select id="bpmPreset" onchange="updateStylePrompt()">
+                    <option value="50 BPM">🧊 50 BPM – ช้าดาร์กดิ่งลึก</option>
+                    <option value="60 BPM">🐢 60 BPM – สมาธิบำบัด / ช้ามาก</option>
+                    <option value="70 BPM">🌙 70 BPM – บัลลาดซึ้งๆ</option>
+                    <option value="80 BPM">☕ 80 BPM – สบายๆ อบอุ่น</option>
+                    <option value="90 BPM" selected>🚶 90 BPM – จังหวะเดินปานกลาง</option>
+                    <option value="105 BPM">🚶 105 BPM – โยกตามเพลินๆ</option>
+                    <option value="120 BPM">⚡ 120 BPM – แดนซ์ / ป๊อบฮิต</option>
+                    <option value="135 BPM">🚀 135 BPM – รวดเร็ว ดุดัน</option>
+                    <option value="150 BPM">🔥 150 BPM – เร็วสะใจ สตรีทพัง</option>
+                    <option value="175 BPM">🌪️ 175+ BPM – พลังทำลายล้างสูงสุด</option>
+                </select>
+            </div>
+            <div>
+                <label>Sound Effects เสริม (Expanded FX)</label>
+                <select id="sfxPreset" onchange="updateStylePrompt()">
+                    <option value="">-- ไม่มีเอฟเฟกต์เสริม --</option>
+                    <option value=", Vinyl crackle sound, Warm analog texture">🌧️ เสียงแผ่นเสียงตอดแปะๆ (Vinyl)</option>
+                    <option value=", Soft rain sound in background, Cozy atmosphere">☔ เสียงฝนตกเบาๆ บรรยากาศอบอุ่น</option>
+                    <option value=", Café ambient noise, Murmur of conversations">☕ เสียงบรรยากาศในคาเฟ่</option>
+                    <option value=", Live concert reverb, Stadium atmosphere, Crowd cheering">🏟️ เสียงก้องไลฟ์คอนเสิร์ต สเตเดียม</option>
+                    <option value=", Retro cassette tape hiss, Lo-fi tape degradation">📼 เสียงเทปคาสเซ็ตเก่าๆ (Tape Hiss)</option>
+                    <option value=", Ocean waves crashing on beach, Relaxing shore">🌊 เสียงคลื่นทะเลซัดสาด ผ่อนคลาย</option>
+                    <option value=", Crackling campfire sound, Cozy night woods">🔥 เสียงกองไฟแคมป์ไฟ ป่ากลางคืน</option>
+                    <option value=", Mechanical keyboard typing sounds, Study vibe">⌨️ เสียงพิมพ์คีย์บอร์ด บรรยากาศห้องสมุด</option>
+                    <option value=", Thunderstorm and heavy rain sounds">⚡ เสียงพายุฝนฟ้าคะนอง</option>
+                    <option value=", Night crickets and wind howling">🦗 เสียงจิ้งหรีดและลมพัดยามค่ำคืน</option>
+                </select>
+            </div>
+            <div>
+                <label>Vocal & Mix Vibe (Expanded)</label>
+                <select id="vocalPreset" onchange="updateStylePrompt()">
+                    <option value="">-- มาตรฐานทั่วไป --</option>
+                    <option value=", Emotional male vocal, Raw delivery">🎙️ เสียงร้องผู้ชาย อารมณ์ดิบๆ ซึ้งๆ</option>
+                    <option value=", Soft female vocal, Airy and gentle">🎙️ เสียงร้องผู้หญิง นุ่มนวล อ่อนหวาน</option>
+                    <option value=", Melancholic choir harmony, Echo effect">👥 เสียงประสานคอรัสเศร้าๆ มีเสียงสะท้อน</option>
+                    <option value=", Whispering vocals, Intimate and close">🗣️ เสียงกระซิบ ใกล้ชิด เป็นกันเอง</option>
+                    <option value=", Male raspy rock vocal, Gritty and raw">🎸 เสียงผู้ชายแหบเสน่ห์ แนวร็อก ดิบกร้าว</option>
+                    <option value=", Powerful belting female vocal, High energy and epic">🔥 เสียงผู้หญิงทรงพลัง พลังสูงกังวาน</option>
+                    <option value=", Auto-tune melodic trap rap vocal, Modern style">🤖 แร็ปใส่ Auto-tune สมัยใหม่ สไตล์แทร็ป</option>
+                    <option value=", Lo-fi muffled vintage radio vocals, Nostalgic">📻 เสียงร้องผ่านวิทยุโบราณ โลไฟวินเทจ</option>
+                    <option value=", Spoken word poetry reading style, Cinematic">📖 สไตล์การพูดกึ่งเล่าเรื่อง บทกวีมีมิติ</option>
+                    <option value=", Sweet children choir harmony, Pure and innocent">🧒 เสียงประสานเด็กๆ ใสๆ บริสุทธิ์</option>
+                    <option value=", Duet male and female harmonious vocals">👫 เสียงร้องคู่ ชาย-หญิง ประสานเสียงลงตัว</option>
+                    <option value=", Ethereal vocalized humming, Atmospheric choir">🎶 เสียงฮัมประสานเสียง ลอยละล่อง กว้างๆ</option>
+                    <option value=", Aggressive fast rap delivery, Hardcore flow">⚡ แร็ปรัวเร็วดุดัน โฟลว์ฮาร์ดคอร์</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="grid-2" style="margin-top: 10px;">
+            <div>
+                <label>✨ พรีเซตคอร์ดฮิตด่วน (Mega Chord Progressions)</label>
+                <select onchange="applyChordPreset(this.value)">
+                    <option value="">-- เลือกชุดคอร์ดสำเร็จรูปเพื่อใส่ลงตาราง --</option>
+                    <option value="ed_sheeran">🎸 เซต Thinking Out Loud (D - D/F# - G - A)</option>
+                    <option value="pop_hit">🎵 เซต Pop Hit ฮิตตลอดกาล (C - G - Am - F)</option>
+                    <option value="sad_ballad">🥀 เซต Sad Ballad ซึ้งกินใจ (Am - F - C - G)</option>
+                    <option value="rnb_chill">🖤 เซต R&B สบายๆ (Dm7 - G7 - Cmaj7 - Am7)</option>
+                    <option value="rock_classic">🎸 เซต Rock Anthem เดือดๆ (Em - C - G - D)</option>
+                    <option value="jazz_chill">🎷 เซต Jazz 2-5-1 สไตล์คาเฟ่ (Dm9 - G13 - Cmaj9)</option>
+                </select>
+            </div>
+            <div>
+                <label>🎨 เปลี่ยนธีมสีแอป (Theme Customizer)</label>
+                <select onchange="changeTheme(this.value)">
+                    <option value="theme-rose">🌹 แดงกุหลาบ (Rose Pro)</option>
+                    <option value="theme-blue">💎 น้ำเงินไซเบอร์ (Cyber Blue)</option>
+                    <option value="theme-purple">🔮 ม่วงลึกลับ (Mystic Purple)</option>
+                    <option value="theme-orange">🍊 ส้มอบอุ่น (Sunset Orange)</option>
+                </select>
+            </div>
+        </div>
+
+        <div style="margin-top: 10px;">
+            <label>Style Prompt สมบูรณ์แบบ (ส่งให้ Suno)</label>
+            <input type="text" id="finalStyleInput" value="Lo-fi Hip Hop, Chill, Mellow, Relaxing, 90 BPM">
+        </div>
+    </div>
+
+    <!-- แถบเครื่องมือจัดการแผ่นเพลง -->
+    <div class="toolbar">
+        <button onclick="addRow()">➕ เพิ่มแถวห้องเพลง</button>
+        <button onclick="addSectionBreakTop()" class="btn-warning">🏷️ แทรกท่อนบนสุด</button>
+        <button onclick="saveProject()" class="btn-secondary">💾 บันทึก</button>
+        <button onclick="loadProject()" class="btn-secondary">📂 โหลด</button>
+    </div>
+
+    <!-- แผ่นตารางเพลงยาวต่อเนื่องแผ่นเดียว -->
+    <div class="sheet-container">
+        <div class="sheet-header-bar">
+            <span style="font-weight: 700; color: var(--accent-orange); font-size: 0.8rem;">🎵 SONG SHEET (โปรเจกต์แต่งเพลง)</span>
+            <span style="font-size: 0.68rem; color: var(--text-muted);">ใช้ปุ่มสุ่มคำร้องด้านล่างช่วยเติมไอเดียได้</span>
+        </div>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 25px;">#</th>
+                        <th style="width: 60px;">คอร์ด</th>
+                        <th>จังหวะ 1</th>
+                        <th>จังหวะ 2</th>
+                        <th>จังหวะ 3</th>
+                        <th>จังหวะ 4</th>
+                        <th style="width: 115px;">ควบคุมแถว</th>
+                    </tr>
+                </thead>
+                <tbody id="sheetBody">
+                    <!-- โล่งว่าง พร้อมให้พิมพ์ใส่เพลงใหม่ทันที -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ส่วนแปลงและคัดลอก Prompt -->
+    <div class="card" style="border-color: var(--primary-color);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 6px;">
+            <h3 style="font-size: 0.85rem; color: #fb7185; text-transform: uppercase;">🤖 Suno Ready Prompt</h3>
+            <div style="display: flex; gap: 4px;">
+                <button onclick="insertRandomVibeWord()" class="btn-info" style="padding: 6px 8px; font-size: 0.65rem;">🎲 สุ่มคำฮุก</button>
+                <button onclick="generateSunoPrompt()" class="btn-success" style="padding: 6px 10px; font-size: 0.7rem;">⚡ อัปเดต</button>
+            </div>
+        </div>
+        <p style="font-size: 0.68rem; color: var(--text-muted); margin-bottom: 4px;">ระบบรวมข้อความพร้อมป้ายกำกับท่อนอัตโนมัติ</p>
+        <div class="output-box" id="sunoOutputBox">กดปุ่ม "อัปเดต" เพื่อรวมข้อความทั้งหมด...</div>
+        <div style="margin-top: 10px; text-align: center;">
+            <button onclick="copyToClipboard()" class="btn-success" style="width: 100%; padding: 12px; font-size: 0.85rem;">📋 คัดลอก Prompt ไปใส่ใน Suno</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function updateStylePrompt() {
+        const genre = document.getElementById('genrePreset').value;
+        const bpm = document.getElementById('bpmPreset').value;
+        const sfx = document.getElementById('sfxPreset').value;
+        const vocal = document.getElementById('vocalPreset').value;
+        document.getElementById('finalStyleInput').value = `${genre}, ${bpm}${sfx}${vocal}`;
+    }
+
+    function changeTheme(themeName) {
+        document.body.className = themeName;
+    }
+
+    function applyChordPreset(type) {
+        let chords = [];
+        if (type === 'ed_sheeran') chords = ['D', 'D/F#', 'G', 'A'];
+        else if (type === 'pop_hit') chords = ['C', 'G', 'Am', 'F'];
+        else if (type === 'sad_ballad') chords = ['Am', 'F', 'C', 'G'];
+        else if (type === 'rnb_chill') chords = ['Dm7', 'G7', 'Cmaj7', 'Am7'];
+        else if (type === 'rock_classic') chords = ['Em', 'C', 'G', 'D'];
+        else if (type === 'jazz_chill') chords = ['Dm9', 'G13', 'Cmaj9', 'A7'];
+        else return;
+
+        document.getElementById('sheetBody').innerHTML = '';
+        chords.forEach(c => addRow(c, '', '', '', ''));
+        alert('โหลดชุดคอร์ดสำเร็จรูปลงตารางเรียบร้อย! 🎸');
+    }
+
+    function insertRandomVibeWord() {
+        const vibes = ['Yeah', 'Oh -', 'Baby', 'Midnight', 'Rain .', 'Hold -', 'Time', 'Feel -', 'Heart', 'Stay .', 'Night', 'Go -'];
+        const randomWord = vibes[Math.floor(Math.random() * vibes.length)];
+        const activeInput = document.activeElement;
+        if (activeInput && activeInput.classList.contains('word-input')) {
+            activeInput.value = randomWord;
+        } else {
+            addRow('Am', randomWord, '.', '.', '.');
+        }
+    }
+
+    function addRow(chord = '', w1 = '', w2 = '', w3 = '', w4 = '', referenceNode = null, position = 'after') {
+        const tbody = document.getElementById('sheetBody');
+        const tr = document.createElement('tr');
+        tr.className = 'lyric-row';
+        tr.innerHTML = `
+            <td class="row-index" style="font-weight: 700; color: var(--text-muted); font-size: 0.75rem;">•</td>
+            <td><input type="text" class="chord-input" value="${chord}" placeholder="Am"></td>
+            <td>
+                <input type="text" class="word-input" value="${w1}" placeholder="คำ 1">
+                <div class="quick-symbols">
+                    <button onclick="insertSymbol(this, ' -')">ลาก(-)</button>
+                    <button onclick="insertSymbol(this, ' .')">พัก(.)</button>
+                </div>
+            </td>
+            <td>
+                <input type="text" class="word-input" value="${w2}" placeholder="คำ 2">
+                <div class="quick-symbols">
+                    <button onclick="insertSymbol(this, ' -')">ลาก(-)</button>
+                    <button onclick="insertSymbol(this, ' .')">พัก(.)</button>
+                </div>
+            </td>
+            <td>
+                <input type="text" class="word-input" value="${w3}" placeholder="คำ 3">
+                <div class="quick-symbols">
+                    <button onclick="insertSymbol(this, ' -')">ลาก(-)</button>
+                    <button onclick="insertSymbol(this, ' .')">พัก(.)</button>
+                </div>
+            </td>
+            <td>
+                <input type="text" class="word-input" value="${w4}" placeholder="คำ 4">
+                <div class="quick-symbols">
+                    <button onclick="insertSymbol(this, ' -')">ลาก(-)</button>
+                    <button onclick="insertSymbol(this, ' .')">พัก(.)</button>
+                </div>
+            </td>
+            <td style="text-align: center; padding: 3px;">
+                <div class="row-controls">
+                    <button onclick="moveRow(this, 'up')" class="btn-secondary" title="สลับขึ้น">⬆️ ขึ้น</button>
+                    <button onclick="moveRow(this, 'down')" class="btn-secondary" title="สลับลง">⬇️ ลง</button>
+                    <button onclick="insertRowNear(this, 'before')" class="btn-info" title="เพิ่มแถวก่อนหน้า">➕ ก่อน</button>
+                    <button onclick="insertRowNear(this, 'after')" class="btn-info" title="เพิ่มแถวถัดไป">➕ ถัด</button>
+                    <button onclick="insertBreakBefore(this)" class="btn-warning" title="แทรกตัวคั่นท่อนก่อนหน้า">🏷️ ท่อน</button>
+                    <button onclick="this.closest('tr').remove(); updateIndices();" class="btn-danger" title="ลบแถวนี้">✕ ลบ</button>
+                </div>
+            </td>
+        `;
+
+        if (referenceNode) {
+            if (position === 'before') {
+                tbody.insertBefore(tr, referenceNode);
+            } else {
+                tbody.insertBefore(tr, referenceNode.nextSibling);
+            }
+        } else {
+            tbody.appendChild(tr);
+        }
+        updateIndices();
+    }
+
+    function insertRowNear(btn, pos) {
+        const currentRow = btn.closest('tr');
+        addRow('', '', '', '', '', currentRow, pos);
+    }
+
+    function moveRow(btn, direction) {
+        const currentRow = btn.closest('tr');
+        if (direction === 'up') {
+            const prevRow = currentRow.previousElementSibling;
+            if (prevRow) {
+                currentRow.parentNode.insertBefore(currentRow, prevRow);
+            }
+        } else if (direction === 'down') {
+            const nextRow = currentRow.nextElementSibling;
+            if (nextRow) {
+                currentRow.parentNode.insertBefore(nextRow, currentRow);
+            }
+        }
+        updateIndices();
+    }
+
+    function insertBreakBefore(btn, defaultType = '[Verse]', noteText = '') {
+        const targetRow = btn.closest('tr');
+        const tbody = document.getElementById('sheetBody');
+        const tr = document.createElement('tr');
+        tr.className = 'section-break-row';
+        tr.innerHTML = `
+            <td colspan="7">
+                <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
+                    <span style="font-size: 0.7rem; color: var(--accent-orange); font-weight: 700;">🏷️ ท่อน:</span>
+                    <select class="break-type-select" style="width: 105px; padding: 4px; font-size: 0.75rem; background: #08080a; color: var(--accent-orange); border: 1px solid var(--border-color); border-radius: 4px;">
+                        <option value="[Intro]" ${defaultType=='[Intro]'?'selected':''}>[Intro]</option>
+                        <option value="[Verse]" ${defaultType=='[Verse]'?'selected':''}>[Verse]</option>
+                        <option value="[Chorus]" ${defaultType=='[Chorus]'?'selected':''}>[Chorus]</option>
+                        <option value="[Bridge]" ${defaultType=='[Bridge]'?'selected':''}>[Bridge]</option>
+                        <option value="[Outro]" ${defaultType=='[Outro]'?'selected':''}>[Outro]</option>
+                    </select>
+                    <input type="text" class="break-note-input" value="${noteText}" placeholder="โน้ตเสริม (เช่น Solo)" style="flex: 1; min-width: 120px; padding: 4px; font-size: 0.75rem; background: #08080a; border: 1px solid var(--border-color); border-radius: 4px;">
+                    <button onclick="moveRow(this, 'up')" class="btn-secondary" style="padding: 3px 5px; font-size: 0.65rem;">⬆️</button>
+                    <button onclick="moveRow(this, 'down')" class="btn-secondary" style="padding: 3px 5px; font-size: 0.65rem;">⬇️</button>
+                    <button onclick="this.closest('tr').remove(); updateIndices();" class="btn-danger" style="padding: 3px 6px; font-size: 0.65rem;">✕ ลบ</button>
+                </div>
+            </td>
+        `;
+        tbody.insertBefore(tr, targetRow);
+        updateIndices();
+    }
+
+    function addSectionBreakTop(defaultType = '[Intro]', noteText = '') {
+        const tbody = document.getElementById('sheetBody');
+        const tr = document.createElement('tr');
+        tr.className = 'section-break-row';
+        tr.innerHTML = `
+            <td colspan="7">
+                <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
+                    <span style="font-size: 0.7rem; color: var(--accent-orange); font-weight: 700;">🏷️ ท่อน:</span>
+                    <select class="break-type-select" style="width: 105px; padding: 4px; font-size: 0.75rem; background: #08080a; color: var(--accent-orange); border: 1px solid var(--border-color); border-radius: 4px;">
+                        <option value="[Intro]" ${defaultType=='[Intro]'?'selected':''}>[Intro]</option>
+                        <option value="[Verse]" ${defaultType=='[Verse]'?'selected':''}>[Verse]</option>
+                        <option value="[Chorus]" ${defaultType=='[Chorus]'?'selected':''}>[Chorus]</option>
+                        <option value="[Bridge]" ${defaultType=='[Bridge]'?'selected':''}>[Bridge]</option>
+                        <option value="[Outro]" ${defaultType=='[Outro]'?'selected':''}>[Outro]</option>
+                    </select>
+                    <input type="text" class="break-note-input" value="${noteText}" placeholder="โน้ตเสริม (เช่น Solo)" style="flex: 1; min-width: 120px; padding: 4px; font-size: 0.75rem; background: #08080a; border: 1px solid var(--border-color); border-radius: 4px;">
+                    <button onclick="moveRow(this, 'up')" class="btn-secondary" style="padding: 3px 5px; font-size: 0.65rem;">⬆️</button>
+                    <button onclick="moveRow(this, 'down')" class="btn-secondary" style="padding: 3px 5px; font-size: 0.65rem;">⬇️</button>
+                    <button onclick="this.closest('tr').remove(); updateIndices();" class="btn-danger" style="padding: 3px 6px; font-size: 0.65rem;">✕ ลบ</button>
+                </div>
+            </td>
+        `;
+        tbody.insertBefore(tr, tbody.firstChild);
+        updateIndices();
+    }
+
+    function updateIndices() {
+        const rows = document.querySelectorAll('#sheetBody tr');
+        let count = 1;
+        rows.forEach(row => {
+            if (row.classList.contains('lyric-row')) {
+                row.querySelector('.row-index').innerText = count++;
+            }
+        });
+    }
+
+    function insertSymbol(btn, symbol) {
+        const input = btn.closest('td').querySelector('.word-input');
+        input.value += symbol;
+    }
+
+    function generateSunoPrompt() {
+        const title = document.getElementById('songTitle').value;
+        const style = document.getElementById('finalStyleInput').value;
+        
+        let promptText = `[Title: ${title}]\n[Style: ${style}]\n\n`;
+
+        const rows = document.querySelectorAll('#sheetBody tr');
+        if (rows.length === 0) {
+            document.getElementById('sunoOutputBox').innerText = "กรุณาเพิ่มแถวห้องเพลงหรือตัวคั่นท่อนอย่างน้อย 1 รายการ";
+            return;
+        }
+
+        rows.forEach(row => {
+            if (row.classList.contains('section-break-row')) {
+                const bType = row.querySelector('.break-type-select').value;
+                const bNote = row.querySelector('.break-note-input').value.trim();
+                promptText += `\n${bType}${bNote ? ' ' + bNote : ''}\n`;
+            } else if (row.classList.contains('lyric-row')) {
+                const words = row.querySelectorAll('.word-input');
+                let lineWords = [];
+                words.forEach(w => {
+                    if (w.value.trim() !== '') {
+                        lineWords.push(w.value.trim());
+                    }
+                });
+                if (lineWords.length > 0) {
+                    promptText += lineWords.join(' ') + '\n';
+                }
+            }
+        });
+
+        document.getElementById('sunoOutputBox').innerText = promptText.trim();
+    }
+
+    function copyToClipboard() {
+        generateSunoPrompt();
+        const text = document.getElementById('sunoOutputBox').innerText;
+        if (!text || text.includes('กรุณาเพิ่มแถว')) {
+            alert('ยังไม่มีข้อมูล Prompt ให้คัดลอกครับ');
+            return;
+        }
+        navigator.clipboard.writeText(text).then(() => {
+            alert('คัดลอก Prompt สำเร็จ! นำไปวางใน Suno ได้เลย 🎵');
+        }).catch(err => {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            alert('คัดลอก Prompt สำเร็จเรียบร้อย!');
+        });
+    }
+
+    function saveProject() {
+        generateSunoPrompt();
+        const rowsData = [];
+        document.querySelectorAll('#sheetBody tr').forEach(row => {
+            if (row.classList.contains('section-break-row')) {
+                rowsData.push({
+                    type: 'break',
+                    bType: row.querySelector('.break-type-select').value,
+                    bNote: row.querySelector('.break-note-input').value
+                });
+            } else if (row.classList.contains('lyric-row')) {
+                const inputs = row.querySelectorAll('input');
+                rowsData.push({
+                    type: 'lyric',
+                    chord: inputs[0].value,
+                    w1: inputs[1].value,
+                    w2: inputs[2].value,
+                    w3: inputs[3].value,
+                    w4: inputs[4].value
+                });
+            }
+        });
+
+        const projectData = {
+            title: document.getElementById('songTitle').value,
+            genrePreset: document.getElementById('genrePreset').value,
+            bpmPreset: document.getElementById('bpmPreset').value,
+            sfxPreset: document.getElementById('sfxPreset').value,
+            vocalPreset: document.getElementById('vocalPreset').value,
+            finalStyleInput: document.getElementById('finalStyleInput').value,
+            rows: rowsData
+        };
+        localStorage.setItem('suno_mega_penalty_project', JSON.stringify(projectData));
+        alert('บันทึกโปรเจกต์ลงในเครื่องสำเร็จ!');
+    }
+
+    function loadProject() {
+        const saved = localStorage.getItem('suno_mega_penalty_project');
+        if (!saved) {
+            alert('ไม่พบข้อมูลโปรเจกต์ที่บันทึกไว้');
+            return;
+        }
+        const data = JSON.parse(saved);
+        document.getElementById('songTitle').value = data.title;
+        document.getElementById('genrePreset').value = data.genrePreset;
+        document.getElementById('bpmPreset').value = data.bpmPreset;
+        document.getElementById('sfxPreset').value = data.sfxPreset;
+        document.getElementById('vocalPreset').value = data.vocalPreset;
+        document.getElementById('finalStyleInput').value = data.finalStyleInput;
+        
+        document.getElementById('sheetBody').innerHTML = '';
+        data.rows.forEach(r => {
+            if (r.type === 'break') {
+                const tbody = document.getElementById('sheetBody');
+                const tr = document.createElement('tr');
+                tr.className = 'section-break-row';
+                tr.innerHTML = `
+                    <td colspan="7">
+                        <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
+                            <span style="font-size: 0.7rem; color: var(--accent-orange); font-weight: 700;">🏷️ ท่อน:</span>
+                            <select class="break-type-select" style="width: 105px; padding: 4px; font-size: 0.75rem; background: #08080a; color: var(--accent-orange); border: 1px solid var(--border-color); border-radius: 4px;">
+                                <option value="[Intro]" ${r.bType=='[Intro]'?'selected':''}>[Intro]</option>
+                                <option value="[Verse]" ${r.bType=='[Verse]'?'selected':''}>[Verse]</option>
+                                <option value="[Chorus]" ${r.bType=='[Chorus]'?'selected':''}>[Chorus]</option>
+                                <option value="[Bridge]" ${r.bType=='[Bridge]'?'selected':''}>[Bridge]</option>
+                                <option value="[Outro]" ${r.bType=='[Outro]'?'selected':''}>[Outro]</option>
+                            </select>
+                            <input type="text" class="break-note-input" value="${r.bNote}" placeholder="โน้ตเสริม (เช่น Solo)" style="flex: 1; min-width: 120px; padding: 4px; font-size: 0.75rem; background: #08080a; border: 1px solid var(--border-color); border-radius: 4px;">
+                            <button onclick="moveRow(this, 'up')" class="btn-secondary" style="padding: 3px 5px; font-size: 0.65rem;">⬆️</button>
+                            <button onclick="moveRow(this, 'down')" class="btn-secondary" style="padding: 3px 5px; font-size: 0.65rem;">⬇️</button>
+                            <button onclick="this.closest('tr').remove(); updateIndices();" class="btn-danger" style="padding: 3px 6px; font-size: 0.65rem;">✕ ลบ</button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            } else if (r.type === 'lyric') {
+                addRow(r.chord, r.w1, r.w2, r.w3, r.w4);
+            }
+        });
+        alert('โหลดโปรเจกต์สำเร็จ!');
+    }
+
+    window.onload = function() {
+        // เปิดหน้าเว็บมาแบบโล่งๆ พร้อมให้เริ่มแต่งเพลงใหม่ได้ทันที
+    };
+</script>
+
+</body>
+</html>
