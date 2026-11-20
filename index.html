@@ -102,7 +102,7 @@
             transition: all 0.2s;
         }
 
-        input:focus, select:focus {
+        input:focus, select:focus, textarea:focus {
             border-color: var(--primary-color);
             box-shadow: 0 0 6px rgba(225, 29, 72, 0.25);
         }
@@ -132,11 +132,12 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 2px;
+            gap: 3px;
             font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 0.3px;
             transition: all 0.15s;
+            touch-action: manipulation;
         }
 
         button:hover { background-color: var(--primary-hover); }
@@ -241,18 +242,61 @@
             height: 24px;
         }
 
-        .output-box {
-            background-color: #030304;
+        /* กล่อง Export แยก 3 ช่องสำหรับ Suno */
+        .export-box-group {
+            background-color: #09090d;
             border: 1px solid var(--border-color);
-            border-radius: 6px;
+            border-radius: 8px;
             padding: 10px;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.8rem;
-            white-space: pre-wrap;
-            color: #fb7185;
-            max-height: 200px;
-            overflow-y: auto;
-            margin-top: 8px;
+            margin-bottom: 10px;
+        }
+
+        .export-box-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .export-box-header label {
+            margin-bottom: 0;
+            color: #f3f4f6;
+            font-size: 0.76rem;
+        }
+
+        .export-meta {
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            margin-left: auto;
+        }
+
+        .btn-copy-split {
+            min-height: 34px;
+            padding: 6px 12px;
+            font-size: 0.72rem;
+            background-color: var(--accent-blue);
+        }
+
+        .btn-copy-split.copied {
+            background-color: #059669 !important;
+        }
+
+        .export-readonly-field {
+            font-family: 'Prompt', monospace;
+            font-size: 0.85rem;
+            color: #fda4af;
+            background-color: #030305;
+            line-height: 1.5;
+        }
+
+        .copy-toast {
+            min-height: 18px;
+            font-size: 0.75rem;
+            color: #34d399;
+            font-weight: 600;
+            text-align: right;
+            margin-top: 4px;
         }
 
         @media (min-width: 768px) {
@@ -271,10 +315,10 @@
 <div class="container">
     <header>
         <h1>SUNO PRO <span>COMPOSER</span></h1>
-        // MEGA EXPANDED EDITION : AUTO-SAVE & FULL OPTIONS
+        <p>// MEGA EXPANDED EDITION : AUTO-SAVE & SPLIT EXPORT</p>
     </header>
 
-    <!-- ส่วนกำหนดค่าเพลง (จัดเต็มตัวเลือก) -->
+    <!-- ส่วนกำหนดค่าเพลง -->
     <div class="card">
         <h3 style="margin-bottom: 10px; font-size: 0.85rem; color: #fb7185; text-transform: uppercase;">1. Project & Mega Style Configuration</h3>
         
@@ -373,7 +417,7 @@
                     <option value=", Sweet children choir harmony, Pure and innocent">🧒 เสียงประสานเด็กๆ ใสๆ บริสุทธิ์</option>
                     <option value=", Duet male and female harmonious vocals">👫 เสียงร้องคู่ ชาย-หญิง ประสานเสียงลงตัว</option>
                     <option value=", Ethereal vocalized humming, Atmospheric choir">🎶 เสียงฮัมประสานเสียง ลอยละล่อง กว้างๆ</option>
-                    <option value=", Aggressive fast rap delivery, Hardcore flow">⚡ แร็ปรัวเร็ุดัน โฟลว์ฮาร์ดคอร์</option>
+                    <option value=", Aggressive fast rap delivery, Hardcore flow">⚡ แร็ปรัวเร็วดุดัน โฟลว์ฮาร์ดคอร์</option>
                 </select>
             </div>
         </div>
@@ -422,7 +466,7 @@
     <div class="sheet-container">
         <div class="sheet-header-bar">
             <span style="font-weight: 700; color: var(--accent-orange); font-size: 0.8rem;">🎵 SONG SHEET (Auto-Saved)</span>
-            <span style="font-size: 0.68rem; color: var(--text-muted);">พิมพ์/แก้ไข ข้อมูลบันทึกให้อัตโนมัติ</span>
+            <span style="font-size: 0.68rem; color: var(--text-muted);">พิมพ์/แก้ไข ข้อมูลบันทึกและอัปเดตช่องส่งออกให้อัตโนมัติ</span>
         </div>
         <div class="table-responsive">
             <table>
@@ -444,20 +488,49 @@
         </div>
     </div>
 
-    <!-- ส่วนแปลงและคัดลอก Prompt -->
+    <!-- ส่วนแยกช่องคัดลอกสำหรับ Suno Custom Mode -->
     <div class="card" style="border-color: var(--primary-color);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 6px;">
-            <h3 style="font-size: 0.85rem; color: #fb7185; text-transform: uppercase;">🤖 Suno Ready Prompt</h3>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 6px;">
+            <div>
+                <h3 style="font-size: 0.85rem; color: #fb7185; text-transform: uppercase;">🤖 Suno Custom Mode Export (แยก 3 ช่อง)</h3>
+                <p style="font-size: 0.68rem; color: var(--text-muted);">กดปุ่มคัดลอกแยกแต่ละช่องไปวางลงหน้าสร้างเพลงของ Suno ได้ทันที</p>
+            </div>
             <div style="display: flex; gap: 4px;">
-                <button onclick="insertRandomVibeWord()" class="btn-info" style="padding: 6px 8px; font-size: 0.65rem;">🎲 สุ่มคำ</button>
-                <button onclick="generateSunoPrompt()" class="btn-success" style="padding: 6px 10px; font-size: 0.7rem;">⚡ อัปเดต</button>
+                <button type="button" onclick="insertRandomVibeWord()" class="btn-info" style="padding: 6px 8px; font-size: 0.68rem;">🎲 สุ่มคำ</button>
+                <button type="button" onclick="generateSunoPrompt()" class="btn-success" style="padding: 6px 10px; font-size: 0.7rem;">⚡ อัปเดต</button>
             </div>
         </div>
-        <p style="font-size: 0.68rem; color: var(--text-muted); margin-bottom: 4px;">ระบบรวมข้อความพร้อมป้ายกำกับท่อนอัตโนมัติ</p>
-        <div class="output-box" id="sunoOutputBox">กดปุ่ม "อัปเดต" เพื่อรวมข้อความทั้งหมด...</div>
-        <div style="margin-top: 10px; text-align: center;">
-            <button onclick="copyToClipboard()" class="btn-success" style="width: 100%; padding: 12px; font-size: 0.85rem;">📋 คัดลอก Prompt ไปใส่ใน Suno</button>
+
+        <!-- ช่อง 1: เนื้อเพลง -->
+        <div class="export-box-group">
+            <div class="export-box-header">
+                <label for="exportLyricsBox">1. เนื้อเพลง (Lyrics)</label>
+                <span id="exportLyricsCount" class="export-meta">0 บรรทัด</span>
+                <button type="button" class="btn-copy-split" onclick="copySplitField('exportLyricsBox', this, 'เนื้อเพลง')">📋 คัดลอกเนื้อเพลง</button>
+            </div>
+            <textarea id="exportLyricsBox" class="export-readonly-field" rows="9" readonly placeholder="เพิ่มแถวและพิมพ์เนื้อเพลงในตารางด้านบน..."></textarea>
         </div>
+
+        <!-- ช่อง 2: สไตล์ -->
+        <div class="export-box-group">
+            <div class="export-box-header">
+                <label for="exportStyleBox">2. สไตล์ (Style)</label>
+                <span id="exportStyleCount" class="export-meta">0 ตัวอักษร</span>
+                <button type="button" class="btn-copy-split" onclick="copySplitField('exportStyleBox', this, 'สไตล์')">📋 คัดลอกสไตล์</button>
+            </div>
+            <textarea id="exportStyleBox" class="export-readonly-field" rows="2" readonly></textarea>
+        </div>
+
+        <!-- ช่อง 3: ชื่อเพลง -->
+        <div class="export-box-group" style="margin-bottom: 4px;">
+            <div class="export-box-header">
+                <label for="exportTitleBox">3. ชื่อเพลง (Title)</label>
+                <button type="button" class="btn-copy-split" onclick="copySplitField('exportTitleBox', this, 'ชื่อเพลง')">📋 คัดลอกชื่อเพลง</button>
+            </div>
+            <input type="text" id="exportTitleBox" class="export-readonly-field" readonly>
+        </div>
+
+        <div id="copyToast" class="copy-toast" role="status" aria-live="polite"></div>
     </div>
 
 </div>
@@ -466,6 +539,17 @@
     let undoStack = [];
     let redoStack = [];
     let isInternalChange = false;
+    let toastTimer = null;
+
+    function showCopyToast(message) {
+        const toast = document.getElementById('copyToast');
+        if (!toast) return;
+        toast.textContent = message;
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+            toast.textContent = '';
+        }, 2500);
+    }
 
     function updateStylePrompt() {
         const genre = document.getElementById('genrePreset').value;
@@ -491,6 +575,7 @@
             redoStack = [];
         }
         localStorage.setItem('suno_mega_expanded_autosave', currentStateString);
+        generateSunoPrompt();
     }
 
     function getProjectDataObject() {
@@ -749,22 +834,19 @@
     }
 
     function generateSunoPrompt() {
-        const title = document.getElementById('songTitle').value;
-        const style = document.getElementById('finalStyleInput').value;
-        
-        let promptText = `[Title: ${title}]\n[Style: ${style}]\n\n`;
+        const title = document.getElementById('songTitle').value.trim();
+        const style = document.getElementById('finalStyleInput').value.trim();
+        let lyricsLines = [];
 
         const rows = document.querySelectorAll('#sheetBody tr');
-        if (rows.length === 0) {
-            document.getElementById('sunoOutputBox').innerText = "กรุณาเพิ่มแถวห้องเพลงหรือตัวคั่นท่อนอย่างน้อย 1 รายการ";
-            return;
-        }
-
         rows.forEach(row => {
             if (row.classList.contains('section-break-row')) {
                 const bType = row.querySelector('.break-type-select').value;
                 const bNote = row.querySelector('.break-note-input').value.trim();
-                promptText += `\n${bType}${bNote ? ' ' + bNote : ''}\n`;
+                if (lyricsLines.length > 0 && lyricsLines[lyricsLines.length - 1] !== '') {
+                    lyricsLines.push('');
+                }
+                lyricsLines.push(`${bType}${bNote ? ' ' + bNote : ''}`);
             } else if (row.classList.contains('lyric-row')) {
                 const words = row.querySelectorAll('.word-input');
                 let lineWords = [];
@@ -774,32 +856,57 @@
                     }
                 });
                 if (lineWords.length > 0) {
-                    promptText += lineWords.join(' ') + '\n';
+                    lyricsLines.push(lineWords.join(' '));
                 }
             }
         });
 
-        document.getElementById('sunoOutputBox').innerText = promptText.trim();
+        const finalLyrics = lyricsLines.join('\n').trim();
+
+        document.getElementById('exportTitleBox').value = title;
+        document.getElementById('exportStyleBox').value = style;
+        document.getElementById('exportLyricsBox').value = finalLyrics;
+
+        document.getElementById('exportStyleCount').textContent = `${style.length} ตัวอักษร`;
+        const lineCount = finalLyrics ? finalLyrics.split('\n').length : 0;
+        document.getElementById('exportLyricsCount').textContent = `${lineCount} บรรทัด`;
     }
 
-    function copyToClipboard() {
+    async function copySplitField(elementId, btn, labelName) {
         generateSunoPrompt();
-        const text = document.getElementById('sunoOutputBox').innerText;
-        if (!text || text.includes('กรุณาเพิ่มแถว')) {
-            alert('ยังไม่มีข้อมูล Prompt ให้คัดลอกครับ');
+        const el = document.getElementById(elementId);
+        if (!el) return;
+        const text = el.value || '';
+
+        if (!text.trim()) {
+            showCopyToast(`⚠️ ยังไม่มีข้อมูลในช่อง "${labelName}"`);
             return;
         }
-        navigator.clipboard.writeText(text).then(() => {
-            alert('คัดลอก Prompt สำเร็จ! นำไปวางใน Suno ได้เลย 🎵');
-        }).catch(err => {
-            const textarea = document.createElement('textarea');
-            textarea.value = text;
-            document.body.appendChild(textarea);
-            textarea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textarea);
-            alert('คัดลอก Prompt สำเร็จเรียบร้อย!');
-        });
+
+        try {
+            if (navigator.clipboard && window.isSecureContext) {
+                await navigator.clipboard.writeText(text);
+            } else {
+                el.focus();
+                el.select();
+                el.setSelectionRange(0, text.length);
+                document.execCommand('copy');
+            }
+
+            const originalText = btn.textContent;
+            btn.textContent = '✅ คัดลอกแล้ว';
+            btn.classList.add('copied');
+            showCopyToast(`คัดลอก "${labelName}" เรียบร้อย!`);
+
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.classList.remove('copied');
+            }, 1500);
+        } catch (err) {
+            el.focus();
+            el.select();
+            showCopyToast(`คัดลอกอัตโนมัติไม่สำเร็จ ให้กดค้างที่ช่อง "${labelName}" เพื่อคัดลอก`);
+        }
     }
 
     function loadProjectFromData(data) {
@@ -846,6 +953,7 @@
         }
         updateIndices();
         isInternalChange = false;
+        generateSunoPrompt();
     }
 
     function loadProjectManually() {
