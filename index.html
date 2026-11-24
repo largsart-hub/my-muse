@@ -17,6 +17,7 @@
             --accent-orange: #f97316;
             --accent-purple: #a855f7;
             --accent-blue: #3b82f6;
+            --accent-emerald: #10b981;
         }
 
         body.theme-rose { --primary-color: #e11d48; --primary-hover: #be123c; }
@@ -107,11 +108,34 @@
             box-shadow: 0 0 6px rgba(225, 29, 72, 0.25);
         }
 
+        .structure-bar {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background: #13131a;
+            border: 1px solid #2e2e3d;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .structure-controls {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .structure-controls select {
+            flex: 1;
+            min-width: 190px;
+        }
+
         .toolbar {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 6px;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
         }
 
         .toolbar button {
@@ -119,6 +143,67 @@
             justify-content: center;
             padding: 10px 6px;
             font-size: 0.72rem;
+        }
+
+        .section-clipboard-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            background: #14121a;
+            border: 1px dashed #3f3b52;
+            border-radius: 8px;
+            padding: 8px 10px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .clipboard-status {
+            font-size: 0.72rem;
+            color: #d4d4d8;
+            flex: 1;
+            min-width: 170px;
+        }
+
+        .clipboard-status strong {
+            color: #fbbf24;
+        }
+
+        .chorus-sync-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.65rem;
+            padding: 2px 7px;
+            border-radius: 999px;
+            font-weight: 700;
+        }
+
+        .chorus-sync-badge.master {
+            background: rgba(16, 185, 129, 0.16);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.4);
+        }
+
+        .chorus-sync-badge.mirror {
+            background: rgba(59, 130, 246, 0.16);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.4);
+        }
+
+        .chorus-sync-badge.detached {
+            background: rgba(249, 115, 22, 0.16);
+            color: #fb923c;
+            border: 1px solid rgba(249, 115, 22, 0.4);
+        }
+
+        .chorus-mirror-row td {
+            background-color: rgba(37, 99, 235, 0.04);
+        }
+
+        .chorus-mirror-row input.synced-input {
+            border-color: rgba(96, 165, 250, 0.45);
+            color: #bfdbfe;
         }
 
         button {
@@ -148,6 +233,7 @@
         button.btn-danger { background-color: #991b1b; }
         button.btn-warning { background-color: var(--accent-orange); color: white; }
         button.btn-info { background-color: var(--accent-blue); color: white; }
+        button.btn-purple { background-color: var(--accent-purple); color: white; }
 
         .sheet-container {
             border: 1px solid var(--border-color);
@@ -232,17 +318,16 @@
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 2px;
-            width: 105px;
+            width: 112px;
             margin: 0 auto;
         }
 
         .row-controls button {
             padding: 4px 2px;
-            font-size: 0.65rem;
+            font-size: 0.64rem;
             height: 24px;
         }
 
-        /* กล่อง Export แยก 3 ช่องสำหรับ Suno */
         .export-box-group {
             background-color: #09090d;
             border: 1px solid var(--border-color);
@@ -305,8 +390,8 @@
             .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
             .toolbar { display: flex; flex-wrap: wrap; }
             table { min-width: 100%; }
-            .row-controls { width: 130px; }
-            .row-controls button { padding: 5px 4px; font-size: 0.72rem; height: 26px; }
+            .row-controls { width: 136px; }
+            .row-controls button { padding: 5px 4px; font-size: 0.7rem; height: 26px; }
         }
     </style>
 </head>
@@ -315,7 +400,7 @@
 <div class="container">
     <header>
         <h1>SUNO PRO <span>COMPOSER</span></h1>
-        <p>// MEGA EXPANDED EDITION : AUTO-SAVE & SPLIT EXPORT</p>
+        <p>// MEGA EXPANDED EDITION : AUTO-SAVE, CHORUS SYNC & SPLIT EXPORT</p>
     </header>
 
     <!-- ส่วนกำหนดค่าเพลง -->
@@ -330,7 +415,6 @@
             <div>
                 <label>เลือกแนวเพลงสากล (Global Genre - Mega List)</label>
                 <select id="genrePreset" onchange="updateStylePrompt()">
-                    <!-- Hip Hop & Urban -->
                     <option value="Lo-fi Hip Hop, Chill, Mellow, Relaxing">🎵 [Lo-fi Hip Hop] – ฮิปฮอปฟังสบาย บีทหน่วงๆ อบอุ่น</option>
                     <option value="Boom Bap Hip Hop, Old school rap beat, Gritty drums, Heavy bass">🎤 [Boom Bap Hip Hop] – ฮิปฮอปยุค 90s ดนตรีดิบ กรูฟแน่นๆ</option>
                     <option value="Modern Trap, Heavy 808 bass, Dark melodic synth, Hard drums">🔥 [Modern Trap] – แทร็ปดาร์กๆ เบส 808 แน่นๆ ทรงพลัง</option>
@@ -338,28 +422,20 @@
                     <option value="Phonk, Memphis rap style, Cowbell melodies, Distortion bass">🚗 [Phonk / Memphis] – ฟองค์เดือดๆ สไตล์ซิ่งรถ เบสแตก</option>
                     <option value="West Coast G-Funk, Smooth synth leads, Whistling synth, Funky bass">🌴 [West Coast G-Funk] – ฮิปฮอปฝั่งตะวันตก ซินธ์พริ้วๆ</option>
                     <option value="Cloud Rap, Ethereal atmospheric beats, Dreamy reverb synth">☁️ [Cloud Rap] – แร็ปลอยๆ บีทดึงดูด ชวนฝัน</option>
-
-                    <!-- Acoustic & Pop -->
                     <option value="Acoustic Pop, Warm acoustic guitar, Soft vocal, Gentle">🪕 [Acoustic Pop] – ป๊อบฟังสบาย กีตาร์โปร่ง (สไตล์ Ed Sheeran)</option>
                     <option value="Indie Pop, Catchy upbeat rhythm, Bright guitar, Youthful">🌟 [Indie Pop] – อินดี้ป๊อบ จังหวะสดใส กีตาร์ติดหู</option>
                     <option value="Synth Pop, Catchy electronic rhythm, 80s groove, Bright melody">🎹 [Synth Pop] – ป๊อบสังเคราะห์ จังหวะสนุกยุค 80s</option>
                     <option value="Dream Pop, Ethereal vocal harmonies, Reverb-drenched guitars">☁️ [Dream Pop] – ดรีมป๊อบ เสียงร้องลอยละล่อง ละมุน</option>
                     <option value="Sad Piano Ballad, Emotional piano chords, Soft strings">🥀 [Sad Piano Ballad] – เปียโนบัลลาดเศร้าๆ บีบหัวใจ</option>
-
-                    <!-- Rock & Metal -->
                     <option value="90s Alternative Rock, Grunge, Distorted guitar, Melancholic">🎸 [90s Alternative Rock] – ร็อกยุค 90s กีตาร์แตกๆ ดิบๆ</option>
                     <option value="Indie Rock, Catchy guitar riffs, Youthful energy, Upbeat">⚡ [Indie Rock] – อินดี้ร็อก พลังวัยรุ่น</option>
                     <option value="Heavy Metal, Aggressive electric guitar, Double bass drum, Epic solo">🤘 [Heavy Metal] – เฮฟวีเมทัล กีตาร์โซโล่เดือดๆ</option>
                     <option value="Punk Rock, Fast tempo, High energy, Rebellious attitude">🛹 [Punk Rock] – พังก์ร็อก จังหวะเร็ว ดิบทรงพลัง</option>
                     <option value="Post-Rock, Atmospheric guitar soundscapes, Epic crescendos">🌌 [Post-Rock] – โพสต์ร็อก ซาวด์กีตาร์กว้างๆ อลังการ</option>
-
-                    <!-- Electronic & Synthwave -->
                     <option value="Synthwave, Retrowave, 80s electronic, Warm analog synth">📼 [Synthwave / Retrowave] – อิเล็กทรอนิกส์ยุค 80s</option>
                     <option value="Cyberpunk Synth, Dark futuristic electronic, Heavy bassline">🦾 [Cyberpunk Synth] – ไซเบอร์พังก์ อนาคตดาร์กๆ นีออนเดือด</option>
                     <option value="EDM Dance, High energy drop, Festival synth leads, Punchy bass">🎉 [EDM / Club Dance] – แดนซ์คลับ พลังงานสูง</option>
                     <option value="Deep House, Four-on-the-floor groove, Smooth bassline, Chill club">🏠 [Deep House] – ดีพเฮาส์ กรูฟนุ่มๆ ชวนโยกตาม</option>
-
-                    <!-- Jazz, R&B & Classical -->
                     <option value="Jazz Hop, Smooth saxophone, Chill beats, Mellow piano">🎷 [Jazz Hop] – แจ๊สฮิปฮอป แซกโซโฟนพริ้ว เปียโนละมุน</option>
                     <option value="R&B, Smooth soulful vocals, Groovy bassline, Sensual vibe">🖤 [R&B / Soul] – อาร์แอนด์บี นุ่มลึก ซึ้ง ชวนเคลิ้ม</option>
                     <option value="Bossa Nova, Acoustic guitar rhythm, Soft breezy vocal, Relaxed">☕ [Bossa Nova] – บอสซาโนวา สไตล์คาเฟ่ริมทะเล</option>
@@ -452,6 +528,27 @@
         </div>
     </div>
 
+    <!-- ส่วนเลือกโครงสร้างเพลงสำเร็จรูปตามแนวเพลง -->
+    <div class="structure-bar">
+        <label style="margin-bottom: 0; color: #fbbf24;">🧱 โหลดโครงสร้างเพลงสำเร็จรูปทั้งโครง (ไม่ต้องบวกแถวเอง)</label>
+        <div class="structure-controls">
+            <select id="songStructureSelect">
+                <option value="lofi_chill">🎵 Lo-fi Hip Hop (Intro - Verse - Chorus - Verse - Chorus - Outro)</option>
+                <option value="pop_standard">🌟 Pop / Acoustic Hit (Intro - Verse - Chorus - Verse - Chorus - Bridge - Chorus - Outro)</option>
+                <option value="rock_90s">🎸 Rock / Alternative 90s (มีท่อน Solo + Bridge พีค)</option>
+                <option value="hiphop_trap">🎤 Hip Hop / Rap / Trap (Verse ยาวสลับ Hook)</option>
+                <option value="ballad_rnb">🥀 Ballad / R&B ซึ้งๆ (Verse - Chorus - Verse - Bridge - Chorus - Outro)</option>
+                <option value="short_loop">🔁 Short Loop / Interlude (Intro - Verse - Chorus - Outro)</option>
+            </select>
+            <button type="button" onclick="applyStructureTemplate(true)" class="btn-warning">📥 สร้างโครงใหม่</button>
+            <button type="button" onclick="applyStructureTemplate(false)" class="btn-info">➕ ต่อท้ายโครงเดิม</button>
+            <button type="button" onclick="syncStructureWithSelectedGenre()" class="btn-purple">🎯 ตามแนวที่เลือก</button>
+        </div>
+        <span id="structureHintText" style="font-size: 0.68rem; color: var(--text-muted);">
+            โครง Lo-fi เน้นห้องเพลงสบายๆ มีช่องว่างหายใจและเปลี่ยนคอร์ดละมุน (Am7 - Dm7 - G7 - Cmaj7)
+        </span>
+    </div>
+
     <!-- แถบเครื่องมือจัดการแผ่นเพลง พร้อม Undo / Redo -->
     <div class="toolbar">
         <button onclick="addRow()" class="btn-success">➕ เพิ่มแถว</button>
@@ -462,11 +559,22 @@
         <button onclick="loadProjectManually()" class="btn-info">📂 โหลด</button>
     </div>
 
+    <!-- แถบวางท่อนที่ก๊อปไว้ + สถานะลิงก์ท่อนคอรัส -->
+    <div class="section-clipboard-bar">
+        <span id="sectionClipboardStatus" class="clipboard-status">
+            ท่อนที่ก๊อปไว้: <strong>ยังไม่ได้ก๊อปท่อน</strong> (กด "📋 ก๊อปท่อน" ที่แถบคั่นท่อน เช่น [Chorus])
+        </span>
+        <span id="chorusSyncSummary" class="clipboard-status" style="text-align: right;">
+            Chorus Sync: <strong>อัตโนมัติจากคอรัสแรก</strong>
+        </span>
+        <button type="button" onclick="pasteCopiedSectionAtEnd()" class="btn-purple">📥 วางต่อท้ายสุด</button>
+    </div>
+
     <!-- แผ่นตารางเพลงยาวต่อเนื่องแผ่นเดียว -->
     <div class="sheet-container">
         <div class="sheet-header-bar">
             <span style="font-weight: 700; color: var(--accent-orange); font-size: 0.8rem;">🎵 SONG SHEET (Auto-Saved)</span>
-            <span style="font-size: 0.68rem; color: var(--text-muted);">พิมพ์/แก้ไข ข้อมูลบันทึกและอัปเดตช่องส่งออกให้อัตโนมัติ</span>
+            <span style="font-size: 0.68rem; color: var(--text-muted);">พิมพ์ท่อน [Chorus] แรกแล้ว คอรัสถัดไปจะตามอัตโนมัติ</span>
         </div>
         <div class="table-responsive">
             <table>
@@ -478,10 +586,10 @@
                         <th>จังหวะ 2</th>
                         <th>จังหวะ 3</th>
                         <th>จังหวะ 4</th>
-                        <th style="width: 115px;">ควบคุมแถว</th>
+                        <th style="width: 120px;">ควบคุมแถว</th>
                     </tr>
                 </thead>
-                <tbody id="sheetBody" oninput="saveState()" onchange="saveState()">
+                <tbody id="sheetBody" oninput="handleSheetInput(event)" onchange="handleSheetChange(event)">
                     <!-- แถวเพลงจะถูกสร้างอัตโนมัติ -->
                 </tbody>
             </table>
@@ -540,6 +648,496 @@
     let redoStack = [];
     let isInternalChange = false;
     let toastTimer = null;
+    let copiedSectionBlock = null;
+
+    const SONG_STRUCTURE_TEMPLATES = {
+        lofi_chill: {
+            label: 'Lo-fi Hip Hop',
+            hint: 'โครง Lo-fi เน้นห้องเพลงสบายๆ มีช่องว่างหายใจและเปลี่ยนคอร์ดละมุน (Am7 - Dm7 - G7 - Cmaj7)',
+            blocks: [
+                { type: '[Intro]', note: 'Chill beat & vinyl', rows: [
+                    { chord: 'Am7', w1: '', w2: '.', w3: '', w4: '.' },
+                    { chord: 'Dm7', w1: '', w2: '.', w3: '', w4: '.' }
+                ]},
+                { type: '[Verse]', note: '8 bars chill story', rows: [
+                    { chord: 'Am7', w1: '', w2: '', w3: '', w4: '.' },
+                    { chord: 'Am7', w1: '', w2: '-', w3: '', w4: '.' },
+                    { chord: 'Dm7', w1: '', w2: '', w3: '', w4: '.' },
+                    { chord: 'Dm7', w1: '', w2: '-', w3: '', w4: '.' },
+                    { chord: 'G7', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'G7', w1: '', w2: '', w3: '', w4: '.' },
+                    { chord: 'Cmaj7', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'Cmaj7', w1: '', w2: '', w3: '', w4: '.' }
+                ]},
+                { type: '[Chorus]', note: 'Warm hook', rows: [
+                    { chord: 'Dm7', w1: '', w2: '', w3: '-', w4: '' },
+                    { chord: 'G7', w1: '', w2: '', w3: '', w4: '.' },
+                    { chord: 'Cmaj7', w1: '', w2: '', w3: '-', w4: '' },
+                    { chord: 'Am7', w1: '', w2: '', w3: '', w4: '.' }
+                ]},
+                { type: '[Verse]', note: 'Second verse', rows: [
+                    { chord: 'Am7', w1: '', w2: '', w3: '', w4: '.' },
+                    { chord: 'Dm7', w1: '', w2: '', w3: '', w4: '.' },
+                    { chord: 'G7', w1: '', w2: '', w3: '', w4: '.' },
+                    { chord: 'Cmaj7', w1: '', w2: '', w3: '', w4: '.' }
+                ]},
+                { type: '[Chorus]', note: 'Repeat hook', rows: [
+                    { chord: 'Dm7', w1: '', w2: '', w3: '-', w4: '' },
+                    { chord: 'G7', w1: '', w2: '', w3: '', w4: '.' },
+                    { chord: 'Cmaj7', w1: '', w2: '', w3: '-', w4: '' },
+                    { chord: 'Am7', w1: '', w2: '', w3: '', w4: '.' }
+                ]},
+                { type: '[Outro]', note: 'Fade out chill', rows: [
+                    { chord: 'Dm7', w1: '', w2: '-', w3: '.', w4: '.' },
+                    { chord: 'Cmaj7', w1: '', w2: '-', w3: '-', w4: '.' }
+                ]}
+            ]
+        },
+        pop_standard: {
+            label: 'Pop / Acoustic Hit',
+            hint: 'โครงเพลงยอดนิยมมี Verse, Chorus, Bridge และท่อนฮุกย้ำท้ายเพลง',
+            blocks: [
+                { type: '[Intro]', note: '', rows: [
+                    { chord: 'C', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'G', w1: '', w2: '', w3: '', w4: '' }
+                ]},
+                { type: '[Verse]', note: '', rows: [
+                    { chord: 'C', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'G', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'Am', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'F', w1: '', w2: '', w3: '', w4: '' }
+                ]},
+                { type: '[Chorus]', note: 'Main hook', rows: [
+                    { chord: 'C', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'G', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'Am', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'F', w1: '', w2: '', w3: '', w4: '' }
+                ]},
+                { type: '[Verse]', note: '', rows: [
+                    { chord: 'C', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'G', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'Am', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'F', w1: '', w2: '', w3: '', w4: '' }
+                ]},
+                { type: '[Chorus]', note: 'Main hook', rows: [
+                    { chord: 'C', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'G', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'Am', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'F', w1: '', w2: '', w3: '', w4: '' }
+                ]},
+                { type: '[Bridge]', note: 'Build up', rows: [
+                    { chord: 'F', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'G', w1: '', w2: '', w3: '', w4: '' }
+                ]},
+                { type: '[Chorus]', note: 'Final hook', rows: [
+                    { chord: 'C', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'G', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'Am', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'F', w1: '', w2: '', w3: '', w4: '' }
+                ]},
+                { type: '[Outro]', note: '', rows: [
+                    { chord: 'C', w1: '', w2: '-', w3: '-', w4: '.' }
+                ]}
+            ]
+        },
+        rock_90s: {
+            label: 'Rock / Alternative 90s',
+            hint: 'โครงร็อกยุค 90s มีท่อนโซโล่กีตาร์และท่อนส่งอารมณ์ก่อนฮุกสุดท้าย',
+            blocks: [
+                { type: '[Intro]', note: 'Distorted riff', rows: [
+                    { chord: 'Em', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'C', w1: '', w2: '', w3: '', w4: '' }
+                ]},
+                { type: '[Verse]', note: '', rows: [
+                    { chord: 'Em', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'C', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'G', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'D', w1: '', w2: '', w3: '', w4: '' }
+                ]},
+                { type: '[Chorus]', note: 'Full band', rows: [
+                    { chord: 'Em', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'C', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'G', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'D', w1: '', w2: '', w3: '', w4: '' }
+                ]},
+                { type: '[Verse]', note: '', rows: [
+                    { chord: 'Em', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'C', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'G', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'D', w1: '', w2: '', w3: '', w4: '' }
+                ]},
+                { type: '[Chorus]', note: 'Full band', rows: [
+                    { chord: 'Em', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'C', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'G', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'D', w1: '', w2: '', w3: '', w4: '' }
+                ]},
+                { type: '[Bridge]', note: 'Guitar Solo', rows: [
+                    { chord: 'C', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'D', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'Em', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'D', w1: '', w2: '', w3: '', w4: '' }
+                ]},
+                { type: '[Chorus]', note: 'Final chorus', rows: [
+                    { chord: 'Em', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'C', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'G', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'D', w1: '', w2: '', w3: '', w4: '' }
+                ]},
+                { type: '[Outro]', note: '', rows: [
+                    { chord: 'Em', w1: '', w2: '-', w3: '-', w4: '.' }
+                ]}
+            ]
+        },
+        hiphop_trap: {
+            label: 'Hip Hop / Rap / Trap',
+            hint: 'โครงแร็ป/แทร็ป เน้นท่อน Verse 8 ห้องสลับท่อนฮุกติดหู',
+            blocks: [
+                { type: '[Intro]', note: 'Beat drop', rows: [
+                    { chord: 'Am', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'F', w1: '', w2: '', w3: '', w4: '' }
+                ]},
+                { type: '[Verse]', note: 'Flow 1', rows: [
+                    { chord: 'Am', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'Am', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'F', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'F', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'C', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'C', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'G', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'G', w1: '', w2: '', w3: '', w4: '' }
+                ]},
+                { type: '[Chorus]', note: 'Catchy hook', rows: [
+                    { chord: 'Am', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'F', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'C', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'G', w1: '', w2: '', w3: '', w4: '' }
+                ]},
+                { type: '[Verse]', note: 'Flow 2', rows: [
+                    { chord: 'Am', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'F', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'C', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'G', w1: '', w2: '', w3: '', w4: '' }
+                ]},
+                { type: '[Chorus]', note: 'Catchy hook', rows: [
+                    { chord: 'Am', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'F', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'C', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'G', w1: '', w2: '', w3: '', w4: '' }
+                ]},
+                { type: '[Outro]', note: '', rows: [
+                    { chord: 'Am', w1: '', w2: '', w3: '.', w4: '.' }
+                ]}
+            ]
+        },
+        ballad_rnb: {
+            label: 'Ballad / R&B ซึ้งๆ',
+            hint: 'โครงเพลงช้าหรือ R&B เน้นการทอดอารมณ์ มีท่อน Bridge ส่งอารมณ์ก่อนฮุก',
+            blocks: [
+                { type: '[Intro]', note: 'Soft keys', rows: [
+                    { chord: 'Dm7', w1: '', w2: '', w3: '', w4: '.' },
+                    { chord: 'G7', w1: '', w2: '', w3: '', w4: '.' }
+                ]},
+                { type: '[Verse]', note: '', rows: [
+                    { chord: 'Dm7', w1: '', w2: '', w3: '', w4: '.' },
+                    { chord: 'G7', w1: '', w2: '', w3: '', w4: '.' },
+                    { chord: 'Cmaj7', w1: '', w2: '', w3: '', w4: '.' },
+                    { chord: 'Am7', w1: '', w2: '', w3: '', w4: '.' }
+                ]},
+                { type: '[Chorus]', note: 'Emotional hook', rows: [
+                    { chord: 'Dm7', w1: '', w2: '', w3: '-', w4: '' },
+                    { chord: 'G7', w1: '', w2: '', w3: '-', w4: '' },
+                    { chord: 'Cmaj7', w1: '', w2: '', w3: '-', w4: '' },
+                    { chord: 'Am7', w1: '', w2: '', w3: '', w4: '.' }
+                ]},
+                { type: '[Verse]', note: '', rows: [
+                    { chord: 'Dm7', w1: '', w2: '', w3: '', w4: '.' },
+                    { chord: 'G7', w1: '', w2: '', w3: '', w4: '.' },
+                    { chord: 'Cmaj7', w1: '', w2: '', w3: '', w4: '.' },
+                    { chord: 'Am7', w1: '', w2: '', w3: '', w4: '.' }
+                ]},
+                { type: '[Bridge]', note: 'Deep emotion', rows: [
+                    { chord: 'Dm7', w1: '', w2: '-', w3: '', w4: '.' },
+                    { chord: 'G7', w1: '', w2: '-', w3: '', w4: '.' }
+                ]},
+                { type: '[Chorus]', note: 'Emotional hook', rows: [
+                    { chord: 'Dm7', w1: '', w2: '', w3: '-', w4: '' },
+                    { chord: 'G7', w1: '', w2: '', w3: '-', w4: '' },
+                    { chord: 'Cmaj7', w1: '', w2: '', w3: '-', w4: '' },
+                    { chord: 'Am7', w1: '', w2: '', w3: '', w4: '.' }
+                ]},
+                { type: '[Outro]', note: '', rows: [
+                    { chord: 'Cmaj7', w1: '', w2: '-', w3: '-', w4: '.' }
+                ]}
+            ]
+        },
+        short_loop: {
+            label: 'Short Loop / Interlude',
+            hint: 'โครงสั้นกระชับ เหมาะสำหรับทดลองไอเดียหรือแต่งเพลงสั้นแบบวนลูป',
+            blocks: [
+                { type: '[Intro]', note: '', rows: [
+                    { chord: 'Am7', w1: '', w2: '', w3: '', w4: '.' }
+                ]},
+                { type: '[Verse]', note: '', rows: [
+                    { chord: 'Am7', w1: '', w2: '', w3: '', w4: '.' },
+                    { chord: 'Dm7', w1: '', w2: '', w3: '', w4: '.' }
+                ]},
+                { type: '[Chorus]', note: '', rows: [
+                    { chord: 'G7', w1: '', w2: '', w3: '', w4: '' },
+                    { chord: 'Cmaj7', w1: '', w2: '', w3: '', w4: '.' }
+                ]},
+                { type: '[Outro]', note: '', rows: [
+                    { chord: 'Cmaj7', w1: '', w2: '-', w3: '.', w4: '.' }
+                ]}
+            ]
+        }
+    };
+
+    /* ============================================================
+       ระบบซิงค์ท่อนคอรัสอัตโนมัติ (Master Chorus -> Mirror Chorus)
+       ============================================================ */
+    function getChorusGroups() {
+        const groups = [];
+        let currentGroup = null;
+
+        Array.from(document.querySelectorAll('#sheetBody tr')).forEach(tr => {
+            if (tr.classList.contains('section-break-row')) {
+                const bType = tr.querySelector('.break-type-select')?.value || '';
+                if (bType === '[Chorus]') {
+                    currentGroup = {
+                        breakRow: tr,
+                        noteInput: tr.querySelector('.break-note-input'),
+                        detached: tr.dataset.chorusDetached === 'true',
+                        lyricRows: []
+                    };
+                    groups.push(currentGroup);
+                } else {
+                    currentGroup = null;
+                }
+            } else if (tr.classList.contains('lyric-row') && currentGroup) {
+                currentGroup.lyricRows.push(tr);
+            }
+        });
+
+        return groups;
+    }
+
+    function readLyricRowValues(tr) {
+        const inputs = tr.querySelectorAll('input');
+        return [
+            inputs[0]?.value || '',
+            inputs[1]?.value || '',
+            inputs[2]?.value || '',
+            inputs[3]?.value || '',
+            inputs[4]?.value || ''
+        ];
+    }
+
+    function writeLyricRowValues(tr, vals) {
+        const inputs = tr.querySelectorAll('input');
+        vals.forEach((v, idx) => {
+            if (inputs[idx] && inputs[idx].value !== v) {
+                inputs[idx].value = v;
+            }
+        });
+    }
+
+    function toggleDetachChorusGroup(btn) {
+        const breakRow = btn.closest('tr.section-break-row');
+        if (!breakRow) return;
+        const isDetached = breakRow.dataset.chorusDetached === 'true';
+        breakRow.dataset.chorusDetached = isDetached ? 'false' : 'true';
+        refreshChorusSyncVisuals(true);
+        saveState();
+        showCopyToast(isDetached ? 'เปิดซิงค์ท่อน Chorus นี้กลับไปตามคอรัสแรกแล้ว' : 'ปลดล็อกให้แก้ท่อน Chorus นี้แยกอิสระแล้ว');
+    }
+
+    function refreshChorusSyncVisuals(pushValuesFromMaster = false) {
+        const groups = getChorusGroups();
+        const summaryEl = document.getElementById('chorusSyncSummary');
+
+        // ล้างสถานะเดิมทั้งหมดก่อน
+        document.querySelectorAll('#sheetBody tr.section-break-row').forEach(tr => {
+            const slot = tr.querySelector('.chorus-badge-slot');
+            if (slot) slot.innerHTML = '';
+        });
+        document.querySelectorAll('#sheetBody tr.lyric-row').forEach(tr => {
+            tr.classList.remove('chorus-mirror-row');
+            tr.querySelectorAll('input').forEach(inp => inp.classList.remove('synced-input'));
+        });
+
+        if (groups.length === 0) {
+            if (summaryEl) summaryEl.innerHTML = 'Chorus Sync: <strong>ยังไม่มีท่อน [Chorus]</strong>';
+            return;
+        }
+
+        const master = groups[0];
+        const masterBreakSlot = master.breakRow.querySelector('.chorus-badge-slot');
+        if (masterBreakSlot) {
+            masterBreakSlot.innerHTML = `<span class="chorus-sync-badge master">★ คอรัสต้นฉบับ</span>`;
+        }
+
+        const masterVals = master.lyricRows.map(readLyricRowValues);
+        const masterNote = master.noteInput ? master.noteInput.value : '';
+
+        let syncedCount = 0;
+
+        for (let i = 1; i < groups.length; i++) {
+            const mirror = groups[i];
+            const mirrorSlot = mirror.breakRow.querySelector('.chorus-badge-slot');
+
+            if (mirror.detached) {
+                if (mirrorSlot) {
+                    mirrorSlot.innerHTML = `
+                        <span class="chorus-sync-badge detached">🔓 แก้แยกอิสระ</span>
+                        <button type="button" onclick="toggleDetachChorusGroup(this)" class="btn-secondary" style="padding: 2px 6px; font-size: 0.62rem;">🔗 ซิงค์ใหม่</button>
+                    `;
+                }
+                continue;
+            }
+
+            syncedCount++;
+            if (mirrorSlot) {
+                mirrorSlot.innerHTML = `
+                    <span class="chorus-sync-badge mirror">🔗 ซิงค์จากคอรัส #1</span>
+                    <button type="button" onclick="toggleDetachChorusGroup(this)" class="btn-secondary" style="padding: 2px 6px; font-size: 0.62rem;">🔓 แก้แยก</button>
+                `;
+            }
+
+            if (pushValuesFromMaster) {
+                if (mirror.noteInput && mirror.noteInput.value !== masterNote) {
+                    mirror.noteInput.value = masterNote;
+                }
+
+                // ปรับจำนวนแถวของคอรัสที่ซิงค์ให้ตรงกับคอรัสต้นฉบับอัตโนมัติ
+                const tbody = document.getElementById('sheetBody');
+                let insertAnchor = mirror.lyricRows.length > 0
+                    ? mirror.lyricRows[mirror.lyricRows.length - 1]
+                    : mirror.breakRow;
+
+                while (mirror.lyricRows.length < masterVals.length) {
+                    const newTr = buildLyricRowElement('', '', '', '', '');
+                    tbody.insertBefore(newTr, insertAnchor.nextSibling);
+                    mirror.lyricRows.push(newTr);
+                    insertAnchor = newTr;
+                }
+
+                while (mirror.lyricRows.length > masterVals.length) {
+                    const extraTr = mirror.lyricRows.pop();
+                    extraTr.remove();
+                }
+
+                mirror.lyricRows.forEach((mRow, idx) => {
+                    writeLyricRowValues(mRow, masterVals[idx]);
+                });
+            }
+
+            mirror.lyricRows.forEach(mRow => {
+                mRow.classList.add('chorus-mirror-row');
+                mRow.querySelectorAll('input').forEach(inp => inp.classList.add('synced-input'));
+            });
+        }
+
+        if (summaryEl) {
+            if (groups.length === 1) {
+                summaryEl.innerHTML = 'Chorus Sync: <strong>มีคอรัสเดียว (เพิ่มคอรัสสองจะซิงค์ให้อัตโนมัติ)</strong>';
+            } else {
+                summaryEl.innerHTML = `Chorus Sync: <strong>ซิงค์อัตโนมัติ ${syncedCount} ท่อน</strong>`;
+            }
+        }
+
+        if (pushValuesFromMaster) {
+            updateIndices();
+        }
+    }
+
+    function handleSheetInput(event) {
+        if (isInternalChange) return;
+        const target = event.target;
+        const groups = getChorusGroups();
+
+        if (groups.length > 0 && target) {
+            const parentTr = target.closest('tr');
+            const isInsideMaster =
+                parentTr === groups[0].breakRow ||
+                groups[0].lyricRows.includes(parentTr);
+
+            if (isInsideMaster) {
+                refreshChorusSyncVisuals(true);
+            }
+        }
+        saveState();
+    }
+
+    function handleSheetChange(event) {
+        if (isInternalChange) return;
+        const target = event.target;
+        if (target && target.classList.contains('break-type-select')) {
+            refreshChorusSyncVisuals(true);
+        }
+        saveState();
+    }
+
+    function updateStructureHint() {
+        const key = document.getElementById('songStructureSelect').value;
+        const tpl = SONG_STRUCTURE_TEMPLATES[key];
+        const hintEl = document.getElementById('structureHintText');
+        if (tpl && hintEl) {
+            hintEl.textContent = tpl.hint;
+        }
+    }
+
+    function applyStructureTemplate(replaceExisting = true) {
+        const key = document.getElementById('songStructureSelect').value;
+        const tpl = SONG_STRUCTURE_TEMPLATES[key];
+        if (!tpl) return;
+
+        if (replaceExisting) {
+            const hasContent = Array.from(document.querySelectorAll('#sheetBody input')).some(inp => inp.value.trim() !== '');
+            if (hasContent && !confirm(`สร้างโครง "${tpl.label}" ทับเนื้อร้องปัจจุบันในตารางใช่หรือไม่? (กดยกเลิก แล้วกด "➕ ต่อท้ายโครงเดิม" เพื่อเก็บเนื้อเดิมไว้ได้)`)) {
+                return;
+            }
+        }
+
+        isInternalChange = true;
+        const tbody = document.getElementById('sheetBody');
+        if (replaceExisting) {
+            tbody.innerHTML = '';
+        }
+
+        tpl.blocks.forEach(block => {
+            tbody.appendChild(buildBreakRowElement(block.type, block.note || ''));
+            block.rows.forEach(r => {
+                tbody.appendChild(buildLyricRowElement(r.chord || '', r.w1 || '', r.w2 || '', r.w3 || '', r.w4 || ''));
+            });
+        });
+
+        updateIndices();
+        refreshChorusSyncVisuals(true);
+        isInternalChange = false;
+        saveState();
+        showCopyToast(`${replaceExisting ? 'สร้างโครง' : 'ต่อท้ายโครง'} "${tpl.label}" เรียบร้อย!`);
+    }
+
+    function syncStructureWithSelectedGenre() {
+        const genreVal = document.getElementById('genrePreset').value.toLowerCase();
+        const selectEl = document.getElementById('songStructureSelect');
+
+        if (genreVal.includes('lo-fi') || genreVal.includes('jazz hop') || genreVal.includes('bossa nova')) {
+            selectEl.value = 'lofi_chill';
+        } else if (genreVal.includes('rock') || genreVal.includes('metal') || genreVal.includes('punk')) {
+            selectEl.value = 'rock_90s';
+        } else if (genreVal.includes('hip hop') || genreVal.includes('trap') || genreVal.includes('drill') || genreVal.includes('phonk') || genreVal.includes('rap')) {
+            selectEl.value = 'hiphop_trap';
+        } else if (genreVal.includes('ballad') || genreVal.includes('r&b') || genreVal.includes('blues')) {
+            selectEl.value = 'ballad_rnb';
+        } else {
+            selectEl.value = 'pop_standard';
+        }
+
+        updateStructureHint();
+        applyStructureTemplate(true);
+    }
 
     function showCopyToast(message) {
         const toast = document.getElementById('copyToast');
@@ -549,6 +1147,127 @@
         toastTimer = setTimeout(() => {
             toast.textContent = '';
         }, 2500);
+    }
+
+    function updateSectionClipboardUI() {
+        const statusEl = document.getElementById('sectionClipboardStatus');
+        if (!statusEl) return;
+        if (!copiedSectionBlock || !copiedSectionBlock.rows.length) {
+            statusEl.innerHTML = 'ท่อนที่ก๊อปไว้: <strong>ยังไม่ได้ก๊อปท่อน</strong> (กด "📋 ก๊อปท่อน" ที่แถบคั่นท่อน เช่น [Chorus])';
+            return;
+        }
+        const lyricCount = copiedSectionBlock.rows.filter(r => r.type === 'lyric').length;
+        const noteSuffix = copiedSectionBlock.note ? ` (${copiedSectionBlock.note})` : '';
+        statusEl.innerHTML = `ท่อนที่ก๊อปไว้: <strong>${copiedSectionBlock.type}${noteSuffix}</strong> — ${lyricCount} ห้องเพลง`;
+    }
+
+    function buildBreakRowElement(defaultType = '[Verse]', noteText = '', detached = false) {
+        const tr = document.createElement('tr');
+        tr.className = 'section-break-row';
+        tr.dataset.chorusDetached = detached ? 'true' : 'false';
+        tr.innerHTML = `
+            <td colspan="7">
+                <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
+                    <span style="font-size: 0.7rem; color: var(--accent-orange); font-weight: 700;">🏷️ ท่อน:</span>
+                    <select class="break-type-select" style="width: 105px; padding: 4px; font-size: 0.75rem; background: #08080a; color: var(--accent-orange); border: 1px solid var(--border-color); border-radius: 4px;">
+                        <option value="[Intro]" ${defaultType=='[Intro]'?'selected':''}>[Intro]</option>
+                        <option value="[Verse]" ${defaultType=='[Verse]'?'selected':''}>[Verse]</option>
+                        <option value="[Chorus]" ${defaultType=='[Chorus]'?'selected':''}>[Chorus]</option>
+                        <option value="[Bridge]" ${defaultType=='[Bridge]'?'selected':''}>[Bridge]</option>
+                        <option value="[Outro]" ${defaultType=='[Outro]'?'selected':''}>[Outro]</option>
+                    </select>
+                    <span class="chorus-badge-slot" style="display: inline-flex; align-items: center; gap: 4px;"></span>
+                    <input type="text" class="break-note-input" value="${noteText}" placeholder="โน้ตเสริม (เช่น Solo)" style="flex: 1; min-width: 110px; padding: 4px; font-size: 0.75rem; background: #08080a; border: 1px solid var(--border-color); border-radius: 4px;">
+                    <button type="button" onclick="copySectionFromBreak(this)" class="btn-purple" style="padding: 3px 7px; font-size: 0.66rem;" title="ก๊อปปี้ท่อนนี้ทั้งหมด">📋 ก๊อปท่อน</button>
+                    <button type="button" onclick="moveRow(this, 'up')" class="btn-secondary" style="padding: 3px 5px; font-size: 0.65rem;">⬆️</button>
+                    <button type="button" onclick="moveRow(this, 'down')" class="btn-secondary" style="padding: 3px 5px; font-size: 0.65rem;">⬇️</button>
+                    <button type="button" onclick="deleteRow(this)" class="btn-danger" style="padding: 3px 6px; font-size: 0.65rem;">✕ ลบ</button>
+                </div>
+            </td>
+        `;
+        return tr;
+    }
+
+    function copySectionFromBreak(btn) {
+        const breakRow = btn.closest('tr.section-break-row');
+        if (!breakRow) return;
+
+        const bType = breakRow.querySelector('.break-type-select').value;
+        const bNote = breakRow.querySelector('.break-note-input').value;
+        const collectedRows = [];
+
+        let cursor = breakRow.nextElementSibling;
+        while (cursor && !cursor.classList.contains('section-break-row')) {
+            if (cursor.classList.contains('lyric-row')) {
+                const inputs = cursor.querySelectorAll('input');
+                collectedRows.push({
+                    type: 'lyric',
+                    chord: inputs[0].value,
+                    w1: inputs[1].value,
+                    w2: inputs[2].value,
+                    w3: inputs[3].value,
+                    w4: inputs[4].value
+                });
+            }
+            cursor = cursor.nextElementSibling;
+        }
+
+        copiedSectionBlock = {
+            type: bType,
+            note: bNote,
+            rows: collectedRows
+        };
+
+        updateSectionClipboardUI();
+        showCopyToast(`ก๊อปปี้ท่อน ${bType} (${collectedRows.length} ห้องเพลง) พร้อมวางซ้ำแล้ว!`);
+    }
+
+    function insertBlockRowsAfter(targetNode, blockData) {
+        if (!blockData || !Array.isArray(blockData.rows)) return null;
+        const tbody = document.getElementById('sheetBody');
+        let anchor = targetNode;
+
+        const breakTr = buildBreakRowElement(blockData.type || '[Chorus]', blockData.note || '');
+        if (anchor && anchor.parentNode === tbody) {
+            tbody.insertBefore(breakTr, anchor.nextSibling);
+        } else {
+            tbody.appendChild(breakTr);
+        }
+        anchor = breakTr;
+
+        blockData.rows.forEach(r => {
+            const lyricTr = buildLyricRowElement(r.chord || '', r.w1 || '', r.w2 || '', r.w3 || '', r.w4 || '');
+            tbody.insertBefore(lyricTr, anchor.nextSibling);
+            anchor = lyricTr;
+        });
+
+        return anchor;
+    }
+
+    function pasteCopiedSectionAfterRow(btn) {
+        if (!copiedSectionBlock || !copiedSectionBlock.rows.length) {
+            alert('ยังไม่ได้ก๊อปปี้ท่อนใดไว้ ให้กดปุ่ม "📋 ก๊อปท่อน" ที่แถบคั่นท่อนก่อนครับ');
+            return;
+        }
+        const currentRow = btn.closest('tr');
+        insertBlockRowsAfter(currentRow, copiedSectionBlock);
+        updateIndices();
+        refreshChorusSyncVisuals(true);
+        saveState();
+        showCopyToast(`วางท่อน ${copiedSectionBlock.type} ต่อจากแถวที่เลือกเรียบร้อย!`);
+    }
+
+    function pasteCopiedSectionAtEnd() {
+        if (!copiedSectionBlock || !copiedSectionBlock.rows.length) {
+            alert('ยังไม่ได้ก๊อปปี้ท่อนใดไว้ ให้กดปุ่ม "📋 ก๊อปท่อน" ที่แถบคั่นท่อนก่อนครับ');
+            return;
+        }
+        const tbody = document.getElementById('sheetBody');
+        insertBlockRowsAfter(tbody.lastElementChild, copiedSectionBlock);
+        updateIndices();
+        refreshChorusSyncVisuals(true);
+        saveState();
+        showCopyToast(`วางท่อน ${copiedSectionBlock.type} ต่อท้ายตารางเรียบร้อย!`);
     }
 
     function updateStylePrompt() {
@@ -585,7 +1304,8 @@
                 rowsData.push({
                     type: 'break',
                     bType: row.querySelector('.break-type-select').value,
-                    bNote: row.querySelector('.break-note-input').value
+                    bNote: row.querySelector('.break-note-input').value,
+                    detached: row.dataset.chorusDetached === 'true'
                 });
             } else if (row.classList.contains('lyric-row')) {
                 const inputs = row.querySelectorAll('input');
@@ -632,16 +1352,7 @@
         loadProjectFromData(JSON.parse(nextStateString));
     }
 
-    function addRow(chord = '', w1 = '', w2 = '', w3 = '', w4 = '', referenceNode = null, position = 'after') {
-        if (!chord) {
-            const rows = document.querySelectorAll('#sheetBody tr.lyric-row');
-            if (rows.length > 0) {
-                const lastRowChordInput = rows[rows.length - 1].querySelector('.chord-input');
-                if (lastRowChordInput) chord = lastRowChordInput.value;
-            }
-        }
-
-        const tbody = document.getElementById('sheetBody');
+    function buildLyricRowElement(chord = '', w1 = '', w2 = '', w3 = '', w4 = '') {
         const tr = document.createElement('tr');
         tr.className = 'lyric-row';
         tr.innerHTML = `
@@ -681,11 +1392,25 @@
                     <button type="button" onclick="moveRow(this, 'down')" class="btn-secondary" title="สลับลง">⬇️ ลง</button>
                     <button type="button" onclick="insertRowNear(this, 'before')" class="btn-info" title="เพิ่มแถวก่อนหน้า">➕ ก่อน</button>
                     <button type="button" onclick="insertRowNear(this, 'after')" class="btn-info" title="เพิ่มแถวถัดไป">➕ ถัด</button>
-                    <button type="button" onclick="insertBreakBefore(this)" class="btn-warning" title="แทรกตัวคั่นท่อน">🏷️ ท่อน</button>
+                    <button type="button" onclick="pasteCopiedSectionAfterRow(this)" class="btn-purple" title="วางท่อนที่ก๊อปไว้ต่อจากแถวนี้">📥 วางท่อน</button>
                     <button type="button" onclick="deleteRow(this)" class="btn-danger" title="ลบแถวนี้">✕ ลบ</button>
                 </div>
             </td>
         `;
+        return tr;
+    }
+
+    function addRow(chord = '', w1 = '', w2 = '', w3 = '', w4 = '', referenceNode = null, position = 'after') {
+        if (!chord) {
+            const rows = document.querySelectorAll('#sheetBody tr.lyric-row');
+            if (rows.length > 0) {
+                const lastRowChordInput = rows[rows.length - 1].querySelector('.chord-input');
+                if (lastRowChordInput) chord = lastRowChordInput.value;
+            }
+        }
+
+        const tbody = document.getElementById('sheetBody');
+        const tr = buildLyricRowElement(chord, w1, w2, w3, w4);
 
         if (referenceNode) {
             if (position === 'before') {
@@ -697,12 +1422,14 @@
             tbody.appendChild(tr);
         }
         updateIndices();
+        refreshChorusSyncVisuals(true);
         saveState();
     }
 
     function deleteRow(btn) {
         btn.closest('tr').remove();
         updateIndices();
+        refreshChorusSyncVisuals(true);
         saveState();
     }
 
@@ -726,61 +1453,16 @@
             }
         }
         updateIndices();
-        saveState();
-    }
-
-    function insertBreakBefore(btn, defaultType = '[Verse]', noteText = '') {
-        const targetRow = btn.closest('tr');
-        const tbody = document.getElementById('sheetBody');
-        const tr = document.createElement('tr');
-        tr.className = 'section-break-row';
-        tr.innerHTML = `
-            <td colspan="7">
-                <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
-                    <span style="font-size: 0.7rem; color: var(--accent-orange); font-weight: 700;">🏷️ ท่อน:</span>
-                    <select class="break-type-select" onchange="saveState()" style="width: 105px; padding: 4px; font-size: 0.75rem; background: #08080a; color: var(--accent-orange); border: 1px solid var(--border-color); border-radius: 4px;">
-                        <option value="[Intro]" ${defaultType=='[Intro]'?'selected':''}>[Intro]</option>
-                        <option value="[Verse]" ${defaultType=='[Verse]'?'selected':''}>[Verse]</option>
-                        <option value="[Chorus]" ${defaultType=='[Chorus]'?'selected':''}>[Chorus]</option>
-                        <option value="[Bridge]" ${defaultType=='[Bridge]'?'selected':''}>[Bridge]</option>
-                        <option value="[Outro]" ${defaultType=='[Outro]'?'selected':''}>[Outro]</option>
-                    </select>
-                    <input type="text" class="break-note-input" oninput="saveState()" value="${noteText}" placeholder="โน้ตเสริม (เช่น Solo)" style="flex: 1; min-width: 120px; padding: 4px; font-size: 0.75rem; background: #08080a; border: 1px solid var(--border-color); border-radius: 4px;">
-                    <button type="button" onclick="moveRow(this, 'up')" class="btn-secondary" style="padding: 3px 5px; font-size: 0.65rem;">⬆️</button>
-                    <button type="button" onclick="moveRow(this, 'down')" class="btn-secondary" style="padding: 3px 5px; font-size: 0.65rem;">⬇️</button>
-                    <button type="button" onclick="deleteRow(this)" class="btn-danger" style="padding: 3px 6px; font-size: 0.65rem;">✕ ลบ</button>
-                </div>
-            </td>
-        `;
-        tbody.insertBefore(tr, targetRow);
-        updateIndices();
+        refreshChorusSyncVisuals(true);
         saveState();
     }
 
     function addSectionBreakTop(defaultType = '[Intro]', noteText = '') {
         const tbody = document.getElementById('sheetBody');
-        const tr = document.createElement('tr');
-        tr.className = 'section-break-row';
-        tr.innerHTML = `
-            <td colspan="7">
-                <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
-                    <span style="font-size: 0.7rem; color: var(--accent-orange); font-weight: 700;">🏷️ ท่อน:</span>
-                    <select class="break-type-select" onchange="saveState()" style="width: 105px; padding: 4px; font-size: 0.75rem; background: #08080a; color: var(--accent-orange); border: 1px solid var(--border-color); border-radius: 4px;">
-                        <option value="[Intro]" ${defaultType=='[Intro]'?'selected':''}>[Intro]</option>
-                        <option value="[Verse]" ${defaultType=='[Verse]'?'selected':''}>[Verse]</option>
-                        <option value="[Chorus]" ${defaultType=='[Chorus]'?'selected':''}>[Chorus]</option>
-                        <option value="[Bridge]" ${defaultType=='[Bridge]'?'selected':''}>[Bridge]</option>
-                        <option value="[Outro]" ${defaultType=='[Outro]'?'selected':''}>[Outro]</option>
-                    </select>
-                    <input type="text" class="break-note-input" oninput="saveState()" value="${noteText}" placeholder="โน้ตเสริม (เช่น Solo)" style="flex: 1; min-width: 120px; padding: 4px; font-size: 0.75rem; background: #08080a; border: 1px solid var(--border-color); border-radius: 4px;">
-                    <button type="button" onclick="moveRow(this, 'up')" class="btn-secondary" style="padding: 3px 5px; font-size: 0.65rem;">⬆️</button>
-                    <button type="button" onclick="moveRow(this, 'down')" class="btn-secondary" style="padding: 3px 5px; font-size: 0.65rem;">⬇️</button>
-                    <button type="button" onclick="deleteRow(this)" class="btn-danger" style="padding: 3px 6px; font-size: 0.65rem;">✕ ลบ</button>
-                </div>
-            </td>
-        `;
+        const tr = buildBreakRowElement(defaultType, noteText);
         tbody.insertBefore(tr, tbody.firstChild);
         updateIndices();
+        refreshChorusSyncVisuals(true);
         saveState();
     }
 
@@ -811,6 +1493,7 @@
     function insertSymbol(btn, symbol) {
         const input = btn.closest('td').querySelector('.word-input');
         input.value += symbol;
+        refreshChorusSyncVisuals(true);
         saveState();
     }
 
@@ -820,6 +1503,7 @@
         const activeInput = document.activeElement;
         if (activeInput && activeInput.classList.contains('word-input')) {
             activeInput.value = randomWord;
+            refreshChorusSyncVisuals(true);
             saveState();
         } else {
             addRow('', randomWord, '.', '.', '.');
@@ -918,40 +1602,21 @@
         document.getElementById('vocalPreset').value = data.vocalPreset || '';
         document.getElementById('finalStyleInput').value = data.finalStyleInput || '';
         
-        document.getElementById('sheetBody').innerHTML = '';
+        const tbody = document.getElementById('sheetBody');
+        tbody.innerHTML = '';
         if (data.rows && data.rows.length > 0) {
             data.rows.forEach(r => {
                 if (r.type === 'break') {
-                    const tbody = document.getElementById('sheetBody');
-                    const tr = document.createElement('tr');
-                    tr.className = 'section-break-row';
-                    tr.innerHTML = `
-                        <td colspan="7">
-                            <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
-                                <span style="font-size: 0.7rem; color: var(--accent-orange); font-weight: 700;">🏷️ ท่อน:</span>
-                                <select class="break-type-select" onchange="saveState()" style="width: 105px; padding: 4px; font-size: 0.75rem; background: #08080a; color: var(--accent-orange); border: 1px solid var(--border-color); border-radius: 4px;">
-                                    <option value="[Intro]" ${r.bType=='[Intro]'?'selected':''}>[Intro]</option>
-                                    <option value="[Verse]" ${r.bType=='[Verse]'?'selected':''}>[Verse]</option>
-                                    <option value="[Chorus]" ${r.bType=='[Chorus]'?'selected':''}>[Chorus]</option>
-                                    <option value="[Bridge]" ${r.bType=='[Bridge]'?'selected':''}>[Bridge]</option>
-                                    <option value="[Outro]" ${r.bType=='[Outro]'?'selected':''}>[Outro]</option>
-                                </select>
-                                <input type="text" class="break-note-input" oninput="saveState()" value="${r.bNote || ''}" placeholder="โน้ตเสริม (เช่น Solo)" style="flex: 1; min-width: 120px; padding: 4px; font-size: 0.75rem; background: #08080a; border: 1px solid var(--border-color); border-radius: 4px;">
-                                <button type="button" onclick="moveRow(this, 'up')" class="btn-secondary" style="padding: 3px 5px; font-size: 0.65rem;">⬆️</button>
-                                <button type="button" onclick="moveRow(this, 'down')" class="btn-secondary" style="padding: 3px 5px; font-size: 0.65rem;">⬇️</button>
-                                <button type="button" onclick="deleteRow(this)" class="btn-danger" style="padding: 3px 6px; font-size: 0.65rem;">✕ ลบ</button>
-                            </div>
-                        </td>
-                    `;
-                    tbody.appendChild(tr);
+                    tbody.appendChild(buildBreakRowElement(r.bType || '[Verse]', r.bNote || '', !!r.detached));
                 } else if (r.type === 'lyric') {
-                    addRow(r.chord, r.w1, r.w2, r.w3, r.w4);
+                    tbody.appendChild(buildLyricRowElement(r.chord || '', r.w1 || '', r.w2 || '', r.w3 || '', r.w4 || ''));
                 }
             });
         } else {
-            addRow('C', '', '', '', '');
+            tbody.appendChild(buildLyricRowElement('C', '', '', '', ''));
         }
         updateIndices();
+        refreshChorusSyncVisuals(false);
         isInternalChange = false;
         generateSunoPrompt();
     }
@@ -970,6 +1635,8 @@
     }
 
     window.onload = function() {
+        updateSectionClipboardUI();
+        updateStructureHint();
         const saved = localStorage.getItem('suno_mega_expanded_autosave');
         if (saved) {
             try {
